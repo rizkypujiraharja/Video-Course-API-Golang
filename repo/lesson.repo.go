@@ -46,7 +46,7 @@ func (c *lessonRepo) UpdateLesson(lesson entity.Lesson) (entity.Lesson, error) {
 
 func (c *lessonRepo) FindOneLessonByID(lessonID string) (entity.Lesson, error) {
 	var lesson entity.Lesson
-	res := c.connection.Where("id = ?", lessonID).Take(&lesson)
+	res := c.connection.Preload("Category").Preload("SubLessons").Where("id = ?", lessonID).Take(&lesson)
 	if res.Error != nil {
 		return lesson, res.Error
 	}
@@ -55,7 +55,7 @@ func (c *lessonRepo) FindOneLessonByID(lessonID string) (entity.Lesson, error) {
 
 func (c *lessonRepo) DeleteLesson(lessonID string) error {
 	var lesson entity.Lesson
-	res := c.connection.Where("id = ?", lessonID).Take(&lesson)
+	res := c.connection.Preload("Category").Where("id = ?", lessonID).Take(&lesson)
 	if res.Error != nil {
 		return res.Error
 	}

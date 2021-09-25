@@ -21,13 +21,17 @@ var (
 	authService    service.AuthService       = service.NewAuthService(userRepo)
 	userController controller.UserController = controller.NewUserController(userService, jwtService)
 
+	categoryRepo       repo.CategoryRepository       = repo.NewCategoryRepo(db)
+	categoryService    service.CategoryService       = service.NewCategoryService(categoryRepo)
+	categoryController controller.CategoryController = controller.NewCategoryController(categoryService, jwtService)
+
 	lessonRepo       repo.LessonRepository       = repo.NewLessonRepo(db)
 	lessonService    service.LessonService       = service.NewLessonService(lessonRepo)
 	lessonController controller.LessonController = controller.NewLessonController(lessonService, jwtService)
 
-	categoryRepo       repo.CategoryRepository       = repo.NewCategoryRepo(db)
-	categoryService    service.CategoryService       = service.NewCategoryService(categoryRepo)
-	categoryController controller.CategoryController = controller.NewCategoryController(categoryService, jwtService)
+	subLessonRepo       repo.SubLessonRepository       = repo.NewSubLessonRepo(db)
+	subLessonService    service.SubLessonService       = service.NewSubLessonService(subLessonRepo)
+	subLessonController controller.SubLessonController = controller.NewSubLessonController(subLessonService, jwtService)
 )
 
 func main() {
@@ -46,7 +50,15 @@ func main() {
 		userRoutes.PUT("/profile", userController.Update)
 	}
 
-	lessonRoutes := server.Group("api/lesson")
+	categoryRoutes := server.Group("api/category", middleware.AuthorizeJWT(jwtService))
+	{
+		categoryRoutes.GET("/", categoryController.All)
+		categoryRoutes.POST("/", categoryController.CreateCategory)
+		categoryRoutes.PUT("/:id", categoryController.UpdateCategory)
+		categoryRoutes.DELETE("/:id", categoryController.DeleteCategory)
+	}
+
+	lessonRoutes := server.Group("api/lesson", middleware.AuthorizeJWT(jwtService))
 	{
 		lessonRoutes.GET("/", lessonController.All)
 		lessonRoutes.POST("/", lessonController.CreateLesson)
@@ -55,13 +67,12 @@ func main() {
 		lessonRoutes.DELETE("/:id", lessonController.DeleteLesson)
 	}
 
-	categoryRoutes := server.Group("api/category")
+	subLessonRoutes := server.Group("api/sub-lesson", middleware.AuthorizeJWT(jwtService))
 	{
-		categoryRoutes.GET("/", categoryController.All)
-		categoryRoutes.POST("/", categoryController.CreateCategory)
-		categoryRoutes.GET("/:id", categoryController.FindOneCategoryByID)
-		categoryRoutes.PUT("/:id", categoryController.UpdateCategory)
-		categoryRoutes.DELETE("/:id", categoryController.DeleteCategory)
+		subLessonRoutes.POST("/", subLessonController.CreateSubLesson)
+		subLessonRoutes.GET("/:id", subLessonController.FindOneSubLessonByID)
+		subLessonRoutes.PUT("/:id", subLessonController.UpdateSubLesson)
+		subLessonRoutes.DELETE("/:id", subLessonController.DeleteSubLesson)
 	}
 
 	server.Run()

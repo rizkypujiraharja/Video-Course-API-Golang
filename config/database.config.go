@@ -29,8 +29,9 @@ func SetupDatabaseConnection() *gorm.DB {
 
 	db.AutoMigrate(
 		&entity.User{},
-		&entity.Lesson{},
 		&entity.Category{},
+		&entity.Lesson{},
+		&entity.SubLesson{},
 	)
 	println("Database connected!")
 	return db
