@@ -14,7 +14,7 @@ type LessonResponse struct {
 	ImageCoverUrl   string                          `json:"image_cover_url"`
 	VideoPreviewUrl string                          `json:"video_preview_url"`
 	Category        _category.CategoryResponse      `json:"category"`
-	SubLessons      []_sub_lesson.SubLessonResponse `json:"sub_lessons"`
+	SubLessons      []_sub_lesson.SubLessonResponse `json:"sub_lessons,omitempty"`
 }
 
 func NewLessonResponse(lesson entity.Lesson) LessonResponse {

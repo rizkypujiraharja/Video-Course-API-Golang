@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"github.com/rizkypujiraharja/Video-Course-API-Golang/entity"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -27,12 +26,6 @@ func SetupDatabaseConnection() *gorm.DB {
 		panic("Failed to create a connection to database")
 	}
 
-	db.AutoMigrate(
-		&entity.User{},
-		&entity.Category{},
-		&entity.Lesson{},
-		&entity.SubLesson{},
-	)
 	println("Database connected!")
 	return db
 }

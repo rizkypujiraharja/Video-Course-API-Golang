@@ -16,7 +16,7 @@ func AuthorizeJWT(jwtService service.JWTService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
 
-		splitToken := strings.Split(authHeader, "Bearer")
+		splitToken := strings.Split(authHeader, "Bearer ")
 		reqToken := strings.TrimSpace(splitToken[1])
 
 		if len(splitToken) != 2 {

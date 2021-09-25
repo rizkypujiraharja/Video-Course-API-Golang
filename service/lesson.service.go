@@ -36,8 +36,8 @@ func (c *lessonService) All() (*[]_lesson.LessonResponse, error) {
 		return nil, err
 	}
 
-	prods := _lesson.NewLessonArrayResponse(lessons)
-	return &prods, nil
+	lessonsRes := _lesson.NewLessonArrayResponse(lessons)
+	return &lessonsRes, nil
 }
 
 func (c *lessonService) CreateLesson(lessonRequest request.CreateLessonRequest) (*_lesson.LessonResponse, error) {

@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/config"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/controller"
+	"github.com/rizkypujiraharja/Video-Course-API-Golang/entity"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/middleware"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/repo"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/service"
@@ -32,9 +33,20 @@ var (
 	subLessonRepo       repo.SubLessonRepository       = repo.NewSubLessonRepo(db)
 	subLessonService    service.SubLessonService       = service.NewSubLessonService(subLessonRepo)
 	subLessonController controller.SubLessonController = controller.NewSubLessonController(subLessonService, jwtService)
+
+	videoRepo       repo.VideoRepository       = repo.NewVideoRepo(db)
+	videoService    service.VideoService       = service.NewVideoService(videoRepo)
+	videoController controller.VideoController = controller.NewVideoController(videoService, jwtService)
 )
 
 func main() {
+	db.AutoMigrate(
+		&entity.User{},
+		&entity.Category{},
+		&entity.Lesson{},
+		&entity.SubLesson{},
+		&entity.Video{},
+	)
 	defer config.CloseDatabaseConnection(db)
 	server := gin.Default()
 
@@ -44,13 +56,13 @@ func main() {
 		authRoutes.POST("/register", authController.Register)
 	}
 
-	userRoutes := server.Group("api/user", middleware.AuthorizeJWT(jwtService))
+	userRoutes := server.Group("api/profile", middleware.AuthorizeJWT(jwtService))
 	{
-		userRoutes.GET("/profile", userController.Profile)
-		userRoutes.PUT("/profile", userController.Update)
+		userRoutes.GET("/", userController.Profile)
+		userRoutes.PUT("/", userController.Update)
 	}
 
-	categoryRoutes := server.Group("api/category", middleware.AuthorizeJWT(jwtService))
+	categoryRoutes := server.Group("api/categories", middleware.AuthorizeJWT(jwtService))
 	{
 		categoryRoutes.GET("/", categoryController.All)
 		categoryRoutes.POST("/", categoryController.CreateCategory)
@@ -58,7 +70,7 @@ func main() {
 		categoryRoutes.DELETE("/:id", categoryController.DeleteCategory)
 	}
 
-	lessonRoutes := server.Group("api/lesson", middleware.AuthorizeJWT(jwtService))
+	lessonRoutes := server.Group("api/lessons", middleware.AuthorizeJWT(jwtService))
 	{
 		lessonRoutes.GET("/", lessonController.All)
 		lessonRoutes.POST("/", lessonController.CreateLesson)
@@ -67,12 +79,20 @@ func main() {
 		lessonRoutes.DELETE("/:id", lessonController.DeleteLesson)
 	}
 
-	subLessonRoutes := server.Group("api/sub-lesson", middleware.AuthorizeJWT(jwtService))
+	subLessonRoutes := server.Group("api/sub-lessons", middleware.AuthorizeJWT(jwtService))
 	{
 		subLessonRoutes.POST("/", subLessonController.CreateSubLesson)
 		subLessonRoutes.GET("/:id", subLessonController.FindOneSubLessonByID)
 		subLessonRoutes.PUT("/:id", subLessonController.UpdateSubLesson)
 		subLessonRoutes.DELETE("/:id", subLessonController.DeleteSubLesson)
+	}
+
+	videoRoutes := server.Group("api/videos", middleware.AuthorizeJWT(jwtService))
+	{
+		videoRoutes.POST("/", videoController.CreateVideo)
+		videoRoutes.GET("/:id", videoController.FindOneVideoByID)
+		videoRoutes.PUT("/:id", videoController.UpdateVideo)
+		videoRoutes.DELETE("/:id", videoController.DeleteVideo)
 	}
 
 	server.Run()
