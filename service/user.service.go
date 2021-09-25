@@ -64,7 +64,7 @@ func (c *userService) CreateUser(registerRequest request.RegisterRequest) (*_use
 		log.Fatalf("Failed map %v", err)
 		return nil, err
 	}
-
+	user.Role = "user"
 	user, _ = c.userRepo.InsertUser(user)
 	res := _user.NewUserResponse(user)
 	return &res, nil

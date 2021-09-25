@@ -62,24 +62,24 @@ func main() {
 		userRoutes.PUT("/", userController.Update)
 	}
 
-	categoryRoutes := server.Group("api/categories", middleware.AuthorizeJWT(jwtService))
+	categoryRoutes := server.Group("api/categories")
 	{
 		categoryRoutes.GET("/", categoryController.All)
-		categoryRoutes.POST("/", categoryController.CreateCategory)
-		categoryRoutes.PUT("/:id", categoryController.UpdateCategory)
-		categoryRoutes.DELETE("/:id", categoryController.DeleteCategory)
+		categoryRoutes.POST("/", categoryController.CreateCategory, middleware.AuthorizeJWT(jwtService, "admin"))
+		categoryRoutes.PUT("/:id", categoryController.UpdateCategory, middleware.AuthorizeJWT(jwtService, "admin"))
+		categoryRoutes.DELETE("/:id", categoryController.DeleteCategory, middleware.AuthorizeJWT(jwtService, "admin"))
 	}
 
-	lessonRoutes := server.Group("api/lessons", middleware.AuthorizeJWT(jwtService))
+	lessonRoutes := server.Group("api/lessons")
 	{
 		lessonRoutes.GET("/", lessonController.All)
-		lessonRoutes.POST("/", lessonController.CreateLesson)
 		lessonRoutes.GET("/:id", lessonController.FindOneLessonByID)
-		lessonRoutes.PUT("/:id", lessonController.UpdateLesson)
-		lessonRoutes.DELETE("/:id", lessonController.DeleteLesson)
+		lessonRoutes.POST("/", lessonController.CreateLesson, middleware.AuthorizeJWT(jwtService))
+		lessonRoutes.PUT("/:id", lessonController.UpdateLesson, middleware.AuthorizeJWT(jwtService))
+		lessonRoutes.DELETE("/:id", lessonController.DeleteLesson, middleware.AuthorizeJWT(jwtService))
 	}
 
-	subLessonRoutes := server.Group("api/sub-lessons", middleware.AuthorizeJWT(jwtService))
+	subLessonRoutes := server.Group("api/sub-lessons", middleware.AuthorizeJWT(jwtService, "admin"))
 	{
 		subLessonRoutes.POST("/", subLessonController.CreateSubLesson)
 		subLessonRoutes.GET("/:id", subLessonController.FindOneSubLessonByID)
@@ -87,7 +87,7 @@ func main() {
 		subLessonRoutes.DELETE("/:id", subLessonController.DeleteSubLesson)
 	}
 
-	videoRoutes := server.Group("api/videos", middleware.AuthorizeJWT(jwtService))
+	videoRoutes := server.Group("api/videos", middleware.AuthorizeJWT(jwtService, "admin"))
 	{
 		videoRoutes.POST("/", videoController.CreateVideo)
 		videoRoutes.GET("/:id", videoController.FindOneVideoByID)
