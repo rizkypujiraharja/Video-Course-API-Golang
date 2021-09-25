@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -59,6 +60,7 @@ func (j *jwtService) GenerateToken(UserID string) string {
 }
 
 func (j *jwtService) ValidateToken(token string, ctx *gin.Context) *jwt.Token {
+	token = strings.ReplaceAll(token, "Bearer ", "")
 	t, err := jwt.Parse(token, func(t_ *jwt.Token) (interface{}, error) {
 		if _, ok := t_.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method %v", t_.Header["alg"])
