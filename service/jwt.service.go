@@ -2,12 +2,14 @@ package service
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"github.com/rizkypujiraharja/Video-Course-API-Golang/common/response"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/config"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/entity"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/repo"
@@ -17,7 +19,7 @@ import (
 //JWTService is a contract of what jwtService can do
 type JWTService interface {
 	GenerateToken(userID string) string
-	ValidateToken(token string, ctx *gin.Context) *jwt.Token
+	ValidateToken(ctx *gin.Context) *jwt.Token
 	GetUserId(ctx *gin.Context) string
 	GetUser(ctx *gin.Context) entity.User
 }
@@ -65,8 +67,23 @@ func (j *jwtService) GenerateToken(UserID string) string {
 	return t
 }
 
-func (j *jwtService) ValidateToken(token string, ctx *gin.Context) *jwt.Token {
-	t, err := jwt.Parse(token, func(t_ *jwt.Token) (interface{}, error) {
+func (j *jwtService) ValidateToken(ctx *gin.Context) *jwt.Token {
+	authHeader := ctx.GetHeader("Authorization")
+
+	splitToken := strings.Split(authHeader, "Bearer ")
+	reqToken := strings.TrimSpace(splitToken[1])
+
+	if len(splitToken) != 2 {
+		response := response.BuildErrorResponse("Failed to process request", "Bearer token not in proper format", nil)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
+	}
+
+	if authHeader == "" {
+		response := response.BuildErrorResponse("Failed to process request", "No token provided", nil)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
+	}
+
+	t, err := jwt.Parse(reqToken, func(t_ *jwt.Token) (interface{}, error) {
 		if _, ok := t_.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method %v", t_.Header["alg"])
 		}
@@ -82,17 +99,19 @@ func (j *jwtService) ValidateToken(token string, ctx *gin.Context) *jwt.Token {
 }
 
 func (j *jwtService) GetUserId(ctx *gin.Context) string {
-	authHeader := ctx.GetHeader("Authorization")
+	token := j.ValidateToken(ctx)
 
-	splitToken := strings.Split(authHeader, "Bearer ")
-	reqToken := strings.TrimSpace(splitToken[1])
+	if token.Valid {
+		claims := token.Claims.(jwt.MapClaims)
+		id := fmt.Sprintf("%v", claims["user_id"])
 
-	token := j.ValidateToken(reqToken, ctx)
-	claims := token.Claims.(jwt.MapClaims)
+		return id
+	} else {
+		response := response.BuildErrorResponse("Error", "Your token is not valid", nil)
+		ctx.AbortWithStatusJSON(http.StatusUnauthorized, response)
+	}
 
-	id := fmt.Sprintf("%v", claims["user_id"])
-
-	return id
+	return ""
 }
 
 func (j *jwtService) GetUser(ctx *gin.Context) entity.User {
