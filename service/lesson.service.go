@@ -16,6 +16,7 @@ type LessonService interface {
 	CreateLesson(lessonRequest request.CreateLessonRequest) (*entity.Lesson, error)
 	UpdateLesson(updateLessonRequest request.UpdateLessonRequest) (*entity.Lesson, error)
 	FindOneLessonByID(lessonID string) (*entity.Lesson, error)
+	FindOneLessonByIDPublic(lessonID string) (*entity.Lesson, error)
 	DeleteLesson(lessonID string) error
 }
 
@@ -68,6 +69,16 @@ func (c *lessonService) CreateLesson(lessonRequest request.CreateLessonRequest) 
 
 func (c *lessonService) FindOneLessonByID(lessonID string) (*entity.Lesson, error) {
 	lesson, err := c.lessonRepo.FindOneLessonByID(lessonID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &lesson, nil
+}
+
+func (c *lessonService) FindOneLessonByIDPublic(lessonID string) (*entity.Lesson, error) {
+	lesson, err := c.lessonRepo.FindOneLessonByIDPublic(lessonID)
 
 	if err != nil {
 		return nil, err

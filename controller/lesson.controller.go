@@ -19,6 +19,7 @@ type LessonController interface {
 	UpdateLesson(ctx *gin.Context)
 	DeleteLesson(ctx *gin.Context)
 	FindOneLessonByID(ctx *gin.Context)
+	FindOneLessonByIDPublic(ctx *gin.Context)
 }
 
 type lessonController struct {
@@ -85,6 +86,21 @@ func (c *lessonController) FindOneLessonByID(ctx *gin.Context) {
 	id := ctx.Param("id")
 
 	lesson, err := c.lessonService.FindOneLessonByID(id)
+	if err != nil {
+		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
+		return
+	}
+
+	res := resource.NewLessonResponse(*lesson)
+	response := response.BuildResponse(true, "OK!", res)
+	ctx.JSON(http.StatusOK, response)
+}
+
+func (c *lessonController) FindOneLessonByIDPublic(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	lesson, err := c.lessonService.FindOneLessonByIDPublic(id)
 	if err != nil {
 		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)

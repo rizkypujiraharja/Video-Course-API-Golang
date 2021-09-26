@@ -84,10 +84,12 @@ func main() {
 	publicLessonRoutes := server.Group("api/lessons")
 	{
 		publicLessonRoutes.GET("/", lessonController.All)
-		publicLessonRoutes.GET("/:id", lessonController.FindOneLessonByID)
+		publicLessonRoutes.GET("/public/:id", lessonController.FindOneLessonByIDPublic)
 	}
 
 	server.GET("/api/my-lessons", middleware.AuthorizeJWT(jwtService, "user"), lessonController.MyLesson)
+	server.GET("/api/lessons/:id", middleware.AuthorizeJWT(jwtService, "user", "admin"), lessonController.FindOneLessonByID)
+
 	lessonRoutes := server.Group("api/lessons", middleware.AuthorizeJWT(jwtService, "admin"))
 	{
 		lessonRoutes.POST("/", lessonController.CreateLesson)

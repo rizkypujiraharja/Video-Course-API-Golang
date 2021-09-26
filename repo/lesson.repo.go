@@ -13,6 +13,7 @@ type LessonRepository interface {
 	UpdateLesson(lesson entity.Lesson) (entity.Lesson, error)
 	DeleteLesson(lessonID string) error
 	FindOneLessonByID(ID string) (entity.Lesson, error)
+	FindOneLessonByIDPublic(ID string) (entity.Lesson, error)
 	FindLessonByIDS(LessonIDS []int) ([]entity.Lesson, error)
 }
 
@@ -48,6 +49,15 @@ func (c *lessonRepo) UpdateLesson(lesson entity.Lesson) (entity.Lesson, error) {
 func (c *lessonRepo) FindOneLessonByID(lessonID string) (entity.Lesson, error) {
 	var lesson entity.Lesson
 	res := c.connection.Preload("Category").Preload("SubLessons.Videos").Where("id = ?", lessonID).Take(&lesson)
+	if res.Error != nil {
+		return lesson, res.Error
+	}
+	return lesson, nil
+}
+
+func (c *lessonRepo) FindOneLessonByIDPublic(lessonID string) (entity.Lesson, error) {
+	var lesson entity.Lesson
+	res := c.connection.Preload("Category").Preload("SubLessons").Where("id = ?", lessonID).Take(&lesson)
 	if res.Error != nil {
 		return lesson, res.Error
 	}

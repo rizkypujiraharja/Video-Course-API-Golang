@@ -7,7 +7,7 @@ import (
 type SubLessonResponse struct {
 	ID             int64           `json:"id"`
 	SubLessonTitle string          `json:"sub_lesson_title"`
-	Videos         []VideoResponse `json:"videos"`
+	Videos         []VideoResponse `json:"videos,omitempty"`
 }
 
 func NewSubLessonResponse(lesson entity.SubLesson) SubLessonResponse {
