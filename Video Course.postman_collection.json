@@ -1,0 +1,2071 @@
+{
+	"info": {
+		"_postman_id": "a8e885b0-1615-45aa-9289-c46e9ae129cf",
+		"name": "Video Course",
+		"description": "Silahkan login terlebih dahulu untuk mendapatkan token dan masukkan kedalam Authorize",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Akun Demo User\",\n    \"email\":\"demo@example.com\",\n    \"password\":\"secret\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/api/auth/register",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Register Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"Akun Administrator\",\n    \"email\":\"admin@example.com\",\n    \"password\":\"secret\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server}}/api/auth/register",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Sep 2021 10:44:26 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "293"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"OK!\",\n    \"errors\": null,\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"Akun Administrator\",\n        \"email\": \"admin@example.com\",\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSIsImV4cCI6MTY2NDE4OTA2NiwiaWF0IjoxNjMyNjUzMDY2LCJpc3MiOiJhZG1pbiJ9.CyUnH9A0_LlEL1NWRWcWZMRwYziPnmrjlus3JyHDnKw\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"admin@example.com\",\n    \"password\":\"secret\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/api/auth/login",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Login Error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"rizkypujiraharja@example.com\",\n    \"password\":\"secrets\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server}}/api/auth/login",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 24 Sep 2021 08:14:12 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "106"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": false,\n    \"message\": \"Failed to login\",\n    \"errors\": [\n        \"failed to login. check your credential\"\n    ],\n    \"data\": {}\n}"
+						},
+						{
+							"name": "Login Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"admin@example.com\",\n    \"password\":\"secret\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server}}/api/auth/login",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Sep 2021 10:45:32 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "293"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"OK!\",\n    \"errors\": null,\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"Akun Administrator\",\n        \"email\": \"admin@example.com\",\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSIsImV4cCI6MTY2NDE4OTEzMiwiaWF0IjoxNjMyNjUzMTMyLCJpc3MiOiJhZG1pbiJ9.oxMOSDYSUIzMRtWLtBo2S44io61PNuE655zwMAMDYxI\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "My Profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/api/profile",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"profile"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "My Profile",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server}}/api/profile",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"api",
+										"profile"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Sep 2021 10:46:06 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "111"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"OK\",\n    \"errors\": null,\n    \"data\": {\n        \"id\": 2,\n        \"name\": \"Akun Demo User\",\n        \"email\": \"demo@example.com\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Administrator\",\n    \"email\":\"admin@example.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/api/profile",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"profile"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update Profile",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"Administrator\",\n    \"email\":\"admin@example.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server}}/api/profile",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"api",
+										"profile"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Sep 2021 10:46:39 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "111"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"OK\",\n    \"errors\": null,\n    \"data\": {\n        \"id\": 2,\n        \"name\": \"Administrator\",\n        \"email\": \"admin@example.com\"\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "Index Category",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{server}}/api/categories",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"categories"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Index Category",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{server}}/api/categories",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"api",
+										"categories"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Sep 2021 10:48:43 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "222"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"OK!\",\n    \"errors\": null,\n    \"data\": [\n        {\n            \"id\": 1,\n            \"category_name\": \"Full Stack\",\n            \"slug\": \"full-stack\"\n        },\n        {\n            \"id\": 2,\n            \"category_name\": \"Front End\",\n            \"slug\": \"front-end\"\n        },\n        {\n            \"id\": 3,\n            \"category_name\": \"Back End\",\n            \"slug\": \"back-end\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Create Category",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Back End\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/api/categories",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"categories"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create Category",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Back End\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server}}/api/categories",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"api",
+										"categories"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Sep 2021 10:48:31 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "106"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"OK!\",\n    \"errors\": null,\n    \"data\": {\n        \"id\": 3,\n        \"category_name\": \"Back End\",\n        \"slug\": \"back-end\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Front End\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/api/categories/2",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Category",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/api/categories/1",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Lesson",
+			"item": [
+				{
+					"name": "Index Lesson",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{server}}/api/lessons",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"lessons"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Index Lesson",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{server}}/api/lessons",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"api",
+										"lessons"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Sep 2021 10:54:31 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "791"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"OK!\",\n    \"errors\": null,\n    \"data\": [\n        {\n            \"id\": 1,\n            \"lesson_name\": \"Laravel Developer\",\n            \"description\": \"Kumpulan video course untuk belajar menjadi seorang fullstack developer.\",\n            \"price\": 250000,\n            \"image_cover_url\": \"https://kawankoding.com/photos/1/kelas/youtube-laravel-8-livewire.png\",\n            \"video_preview_url\": \"https://www.youtube.com/watch?v=zjS45FPdd3c\",\n            \"category\": {\n                \"id\": 1,\n                \"category_name\": \"Full Stack\",\n                \"slug\": \"full-stack\"\n            }\n        },\n        {\n            \"id\": 2,\n            \"lesson_name\": \"Belajar Golang Untuk Pemula\",\n            \"description\": \"video course untuk belajar menjadi mahir golang.\",\n            \"price\": 350000,\n            \"image_cover_url\": \"https://miro.medium.com/max/1400/0*7vQ8eRc28yz9k__r.png\",\n            \"video_preview_url\": \"https://youtu.be/nyGu8Xn5b3g?list=PL-CtdCApEFH_t5_dtCQZgWJqWF45WRgZw\",\n            \"category\": {\n                \"id\": 3,\n                \"category_name\": \"Back End\",\n                \"slug\": \"back-end\"\n            }\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "My Lesson",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{server}}/api/my-lessons",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"my-lessons"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "My Lesson",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{server}}/api/my-lessons",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"api",
+										"my-lessons"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Sep 2021 11:59:08 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "426"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"OK!\",\n    \"errors\": null,\n    \"data\": [\n        {\n            \"id\": 1,\n            \"lesson_name\": \"Laravel Developer\",\n            \"description\": \"Kumpulan video course untuk belajar menjadi seorang fullstack developer.\",\n            \"price\": 250000,\n            \"image_cover_url\": \"https://kawankoding.com/photos/1/kelas/youtube-laravel-8-livewire.png\",\n            \"video_preview_url\": \"https://www.youtube.com/watch?v=zjS45FPdd3c\",\n            \"category\": {\n                \"id\": 1,\n                \"category_name\": \"Full Stack\",\n                \"slug\": \"full-stack\"\n            }\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Create Lesson",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Belajar Golang Untuk Pemula\",\n    \"description\": \"video course untuk belajar menjadi mahir golang.\",\n    \"price\": 350000,\n    \"image_cover_url\": \"https://miro.medium.com/max/1400/0*7vQ8eRc28yz9k__r.png\",\n    \"video_preview_url\": \"https://youtu.be/nyGu8Xn5b3g?list=PL-CtdCApEFH_t5_dtCQZgWJqWF45WRgZw\",\n    \"category_id\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/api/lessons",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"lessons"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create Lesson",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Belajar Golang Untuk Pemula\",\n    \"description\": \"video course untuk belajar menjadi mahir golang.\",\n    \"price\": 350000,\n    \"image_cover_url\": \"https://miro.medium.com/max/1400/0*7vQ8eRc28yz9k__r.png\",\n    \"video_preview_url\": \"https://youtu.be/nyGu8Xn5b3g?list=PL-CtdCApEFH_t5_dtCQZgWJqWF45WRgZw\",\n    \"category_id\": 3\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server}}/api/lessons",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"api",
+										"lessons"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Sep 2021 10:54:07 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "417"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"OK!\",\n    \"errors\": null,\n    \"data\": {\n        \"id\": 2,\n        \"lesson_name\": \"Belajar Golang Untuk Pemula\",\n        \"description\": \"video course untuk belajar menjadi mahir golang.\",\n        \"price\": 350000,\n        \"image_cover_url\": \"https://miro.medium.com/max/1400/0*7vQ8eRc28yz9k__r.png\",\n        \"video_preview_url\": \"https://youtu.be/nyGu8Xn5b3g?list=PL-CtdCApEFH_t5_dtCQZgWJqWF45WRgZw\",\n        \"category\": {\n            \"id\": 3,\n            \"category_name\": \"Back End\",\n            \"slug\": \"back-end\"\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Show Lesson By User / Admin",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMiIsImV4cCI6MTY2NDAwODY1MiwiaWF0IjoxNjMyNDcyNjUyLCJpc3MiOiJhZG1pbiJ9.Duaojdoirr20jdqs2n0FP__oVJ6o2-8EewP68Adrpec",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{server}}/api/lessons/1",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"lessons",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Show Lesson By User / Admin",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMiIsImV4cCI6MTY2NDAwODY1MiwiaWF0IjoxNjMyNDcyNjUyLCJpc3MiOiJhZG1pbiJ9.Duaojdoirr20jdqs2n0FP__oVJ6o2-8EewP68Adrpec",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{server}}/api/lessons/1",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"api",
+										"lessons",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Sep 2021 11:36:52 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1536"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"OK!\",\n    \"errors\": null,\n    \"data\": {\n        \"id\": 1,\n        \"lesson_name\": \"Laravel Developer\",\n        \"description\": \"Kumpulan video course untuk belajar menjadi seorang fullstack developer.\",\n        \"price\": 250000,\n        \"image_cover_url\": \"https://kawankoding.com/photos/1/kelas/youtube-laravel-8-livewire.png\",\n        \"video_preview_url\": \"https://www.youtube.com/watch?v=zjS45FPdd3c\",\n        \"category\": {\n            \"id\": 1,\n            \"category_name\": \"Full Stack\",\n            \"slug\": \"full-stack\"\n        },\n        \"sub_lessons\": [\n            {\n                \"id\": 1,\n                \"sub_lesson_title\": \"Berkenalan Dengan Laravel\",\n                \"videos\": [\n                    {\n                        \"id\": 1,\n                        \"lesson_name\": \"Pengenalan Laravel\",\n                        \"description\": \"Berkenalan dulu dengan laravel\",\n                        \"video_url\": \"https://youtu.be/geIv2xHW48A?list=PLEgI20pG1Dqz6wCJUT8VKYCxIjtBhBxi8\"\n                    },\n                    {\n                        \"id\": 2,\n                        \"lesson_name\": \"Installasi Laravel\",\n                        \"description\": \"Langkah-langkah Installasi Laravel\",\n                        \"video_url\": \"https://youtu.be/PrSP9EHXJJo?list=PLEgI20pG1Dqz6wCJUT8VKYCxIjtBhBxi8\"\n                    },\n                    {\n                        \"id\": 3,\n                        \"lesson_name\": \"Pembuatan Auth\",\n                        \"description\": \"Langkah-langkah membuat auth dan setting database\",\n                        \"video_url\": \"https://youtu.be/dSMBQ7gWpXg?list=PLEgI20pG1Dqz6wCJUT8VKYCxIjtBhBxi8\"\n                    }\n                ]\n            },\n            {\n                \"id\": 2,\n                \"sub_lesson_title\": \"Eloquet Relationship\",\n                \"videos\": [\n                    {\n                        \"id\": 4,\n                        \"lesson_name\": \"Apa Itu Eloquent\",\n                        \"description\": \"mempelajari eloquent lebih dalam\",\n                        \"video_url\": \"https://youtu.be/UD889BdKWK4?list=PLEgI20pG1Dqz6wCJUT8VKYCxIjtBhBxi8\"\n                    },\n                    {\n                        \"id\": 5,\n                        \"lesson_name\": \"Relation Has One\",\n                        \"description\": \"Belajar Relasi has one\",\n                        \"video_url\": \"https://youtu.be/SL2vjRDhaoI\"\n                    },\n                    {\n                        \"id\": 6,\n                        \"lesson_name\": \"Relation BelongsTo\",\n                        \"description\": \"Belajar Relasi BelongsTo\",\n                        \"video_url\": \"https://youtu.be/JU4hQILRKog\"\n                    }\n                ]\n            }\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Show Lesson By Guest",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMiIsImV4cCI6MTY2NDAwODY1MiwiaWF0IjoxNjMyNDcyNjUyLCJpc3MiOiJhZG1pbiJ9.Duaojdoirr20jdqs2n0FP__oVJ6o2-8EewP68Adrpec",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{server}}/api/lessons/public/1",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"lessons",
+								"public",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Show Lesson By Guest",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMiIsImV4cCI6MTY2NDAwODY1MiwiaWF0IjoxNjMyNDcyNjUyLCJpc3MiOiJhZG1pbiJ9.Duaojdoirr20jdqs2n0FP__oVJ6o2-8EewP68Adrpec",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{server}}/api/lessons/public/1",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"api",
+										"lessons",
+										"public",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Sep 2021 11:37:10 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "547"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"OK!\",\n    \"errors\": null,\n    \"data\": {\n        \"id\": 1,\n        \"lesson_name\": \"Laravel Developer\",\n        \"description\": \"Kumpulan video course untuk belajar menjadi seorang fullstack developer.\",\n        \"price\": 250000,\n        \"image_cover_url\": \"https://kawankoding.com/photos/1/kelas/youtube-laravel-8-livewire.png\",\n        \"video_preview_url\": \"https://www.youtube.com/watch?v=zjS45FPdd3c\",\n        \"category\": {\n            \"id\": 1,\n            \"category_name\": \"Full Stack\",\n            \"slug\": \"full-stack\"\n        },\n        \"sub_lessons\": [\n            {\n                \"id\": 1,\n                \"sub_lesson_title\": \"Berkenalan Dengan Laravel\"\n            },\n            {\n                \"id\": 2,\n                \"sub_lesson_title\": \"Eloquet Relationship\"\n            }\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Lesson",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Laravel Developer\",\n    \"description\": \"Kumpulan video course untuk belajar menjadi seorang fullstack developer.\",\n    \"price\": 250000,\n    \"image_cover_url\": \"https://kawankoding.com/photos/1/kelas/youtube-laravel-8-livewire.png\",\n    \"video_preview_url\": \"https://www.youtube.com/watch?v=zjS45FPdd3c\",\n    \"category_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/api/lessons/1",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"lessons",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update Lesson",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Laravel Developer\",\n    \"description\": \"Kumpulan video course untuk belajar menjadi seorang fullstack developer.\",\n    \"price\": 250000,\n    \"image_cover_url\": \"https://kawankoding.com/photos/1/kelas/youtube-laravel-8-livewire.png\",\n    \"video_preview_url\": \"https://www.youtube.com/watch?v=zjS45FPdd3c\",\n    \"category_id\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server}}/api/lessons/1",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"api",
+										"lessons",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Sep 2021 10:49:48 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "424"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"OK!\",\n    \"errors\": null,\n    \"data\": {\n        \"id\": 1,\n        \"lesson_name\": \"Laravel Developer\",\n        \"description\": \"Kumpulan video course untuk belajar menjadi seorang fullstack developer.\",\n        \"price\": 250000,\n        \"image_cover_url\": \"https://kawankoding.com/photos/1/kelas/youtube-laravel-8-livewire.png\",\n        \"video_preview_url\": \"https://www.youtube.com/watch?v=zjS45FPdd3c\",\n        \"category\": {\n            \"id\": 1,\n            \"category_name\": \"Full Stack\",\n            \"slug\": \"full-stack\"\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Lesson",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/api/lessons/1",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"lessons",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sub Lesson",
+			"item": [
+				{
+					"name": "Create Sub Lesson",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Struktur Folder Pada Project Laravel\",\n    \"lesson_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/api/sub-lessons",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"sub-lessons"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create Sub Lesson",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Struktur Folder Pada Project Laravel\",\n    \"lesson_id\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server}}/api/sub-lessons",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"api",
+										"sub-lessons"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Sep 2021 11:03:09 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "119"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"OK!\",\n    \"errors\": null,\n    \"data\": {\n        \"id\": 2,\n        \"sub_lesson_title\": \"Struktur Folder Pada Project Laravel\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Sub Lesson",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Eloquet Relationship\",\n    \"lesson_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/api/sub-lessons/2",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"sub-lessons",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update Sub Lesson",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Berkenalan Dengan Laravel\",\n    \"lesson_id\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server}}/api/sub-lessons/1",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"api",
+										"sub-lessons",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Sep 2021 11:04:02 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "108"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"OK!\",\n    \"errors\": null,\n    \"data\": {\n        \"id\": 1,\n        \"sub_lesson_title\": \"Berkenalan Dengan Laravel\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Sub Lesson",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/api/sub-lessons/1",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"sub-lessons",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Video Lesson",
+			"item": [
+				{
+					"name": "Create Video",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Relation BelongsTo\",\n    \"sub_lesson_id\": 2,\n    \"description\": \"Belajar Relasi BelongsTo\",\n    \"video_url\": \"https://youtu.be/JU4hQILRKog\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/api/videos",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"videos"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create Video",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Pembuatan Auth\",\n    \"sub_lesson_id\": 1,\n    \"description\": \"Langkah-langkah membuat auth dan setting database\",\n    \"video_url\": \"https://youtu.be/dSMBQ7gWpXg?list=PLEgI20pG1Dqz6wCJUT8VKYCxIjtBhBxi8\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server}}/api/videos",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"api",
+										"videos"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Sep 2021 11:09:19 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "241"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"OK!\",\n    \"errors\": null,\n    \"data\": {\n        \"id\": 3,\n        \"lesson_name\": \"Pembuatan Auth\",\n        \"description\": \"Langkah-langkah membuat auth dan setting database\",\n        \"video_url\": \"https://youtu.be/dSMBQ7gWpXg?list=PLEgI20pG1Dqz6wCJUT8VKYCxIjtBhBxi8\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Video",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Installasi Laravel\",\n    \"sub_lesson_id\": 1,\n    \"description\": \"Langkah-langkah Installasi Laravel\",\n    \"video_url\": \"https://youtu.be/PrSP9EHXJJo?list=PLEgI20pG1Dqz6wCJUT8VKYCxIjtBhBxi8\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/api/videos/2",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"videos",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update Video",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Installasi Laravel\",\n    \"sub_lesson_id\": 1,\n    \"description\": \"Langkah-langkah Installasi Laravel\",\n    \"video_url\": \"https://youtu.be/PrSP9EHXJJo?list=PLEgI20pG1Dqz6wCJUT8VKYCxIjtBhBxi8\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server}}/api/videos/2",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"api",
+										"videos",
+										"2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Sep 2021 11:08:30 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "230"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"OK!\",\n    \"errors\": null,\n    \"data\": {\n        \"id\": 2,\n        \"lesson_name\": \"Installasi Laravel\",\n        \"description\": \"Langkah-langkah Installasi Laravel\",\n        \"video_url\": \"https://youtu.be/PrSP9EHXJJo?list=PLEgI20pG1Dqz6wCJUT8VKYCxIjtBhBxi8\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Video",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/api/videos/1",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"videos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Create Order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"lesson_ids\": [1, 2]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/api/orders",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create Order",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"lesson_ids\": [1, 2]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server}}/api/orders",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"api",
+										"orders"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Sep 2021 11:40:10 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "288"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"OK!\",\n    \"errors\": null,\n    \"data\": {\n        \"id\": 2,\n        \"invoice_code\": \"INV-2021926APGATL\",\n        \"status\": \"unpaid\",\n        \"total_order\": 600000,\n        \"created_at\": \"2021-09-26T11:40:10.406142Z\",\n        \"updated_at\": \"2021-09-26T11:40:10.406143Z\",\n        \"user\": {\n            \"id\": 2,\n            \"name\": \"Akun Demo User\",\n            \"email\": \"demo@example.com\"\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "My Order",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/api/my-orders",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"my-orders"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "My Order",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server}}/api/my-orders",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"api",
+										"my-orders"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Sep 2021 11:40:45 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "526"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"OK!\",\n    \"errors\": null,\n    \"data\": [\n        {\n            \"id\": 1,\n            \"invoice_code\": \"INV-2021926GMWJGS\",\n            \"status\": \"unpaid\",\n            \"total_order\": 250000,\n            \"created_at\": \"2021-09-26T11:40:00.063347Z\",\n            \"updated_at\": \"2021-09-26T11:40:00.063347Z\",\n            \"user\": {\n                \"id\": 2,\n                \"name\": \"Akun Demo User\",\n                \"email\": \"demo@example.com\"\n            }\n        },\n        {\n            \"id\": 2,\n            \"invoice_code\": \"INV-2021926APGATL\",\n            \"status\": \"unpaid\",\n            \"total_order\": 600000,\n            \"created_at\": \"2021-09-26T11:40:10.406142Z\",\n            \"updated_at\": \"2021-09-26T11:40:10.406143Z\",\n            \"user\": {\n                \"id\": 2,\n                \"name\": \"Akun Demo User\",\n                \"email\": \"demo@example.com\"\n            }\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Index Order",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/api/orders",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Index Order",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server}}/api/orders",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"api",
+										"orders"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Sep 2021 11:57:01 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "526"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"OK!\",\n    \"errors\": null,\n    \"data\": [\n        {\n            \"id\": 1,\n            \"invoice_code\": \"INV-2021926GMWJGS\",\n            \"status\": \"unpaid\",\n            \"total_order\": 250000,\n            \"created_at\": \"2021-09-26T11:40:00.063347Z\",\n            \"updated_at\": \"2021-09-26T11:40:00.063347Z\",\n            \"user\": {\n                \"id\": 2,\n                \"name\": \"Akun Demo User\",\n                \"email\": \"demo@example.com\"\n            }\n        },\n        {\n            \"id\": 2,\n            \"invoice_code\": \"INV-2021926APGATL\",\n            \"status\": \"unpaid\",\n            \"total_order\": 600000,\n            \"created_at\": \"2021-09-26T11:40:10.406142Z\",\n            \"updated_at\": \"2021-09-26T11:40:10.406143Z\",\n            \"user\": {\n                \"id\": 2,\n                \"name\": \"Akun Demo User\",\n                \"email\": \"demo@example.com\"\n            }\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Change status to paid",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/api/orders/paid/1",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"paid",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Change status to paid",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{server}}/api/orders/paid/1",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"api",
+										"orders",
+										"paid",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Sep 2021 11:57:27 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "694"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"OK!\",\n    \"errors\": null,\n    \"data\": {\n        \"id\": 1,\n        \"invoice_code\": \"INV-2021926GMWJGS\",\n        \"status\": \"paid\",\n        \"total_order\": 250000,\n        \"created_at\": \"2021-09-26T11:40:00.063347Z\",\n        \"updated_at\": \"2021-09-26T11:57:27.814202Z\",\n        \"user\": {\n            \"id\": 2,\n            \"name\": \"Akun Demo User\",\n            \"email\": \"demo@example.com\"\n        },\n        \"order_details\": [\n            {\n                \"id\": 1,\n                \"lesson\": {\n                    \"id\": 1,\n                    \"lesson_name\": \"Laravel Developer\",\n                    \"description\": \"Kumpulan video course untuk belajar menjadi seorang fullstack developer.\",\n                    \"price\": 250000,\n                    \"image_cover_url\": \"https://kawankoding.com/photos/1/kelas/youtube-laravel-8-livewire.png\",\n                    \"video_preview_url\": \"https://www.youtube.com/watch?v=zjS45FPdd3c\",\n                    \"category\": {\n                        \"id\": 1,\n                        \"category_name\": \"Full Stack\",\n                        \"slug\": \"full-stack\"\n                    }\n                }\n            }\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Change status to unpaid",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/api/orders/unpaid/1",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"unpaid",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Change status to unpaid",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{server}}/api/orders/unpaid/1",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"api",
+										"orders",
+										"unpaid",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Sep 2021 11:57:41 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "696"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"OK!\",\n    \"errors\": null,\n    \"data\": {\n        \"id\": 1,\n        \"invoice_code\": \"INV-2021926GMWJGS\",\n        \"status\": \"unpaid\",\n        \"total_order\": 250000,\n        \"created_at\": \"2021-09-26T11:40:00.063347Z\",\n        \"updated_at\": \"2021-09-26T11:57:41.807181Z\",\n        \"user\": {\n            \"id\": 2,\n            \"name\": \"Akun Demo User\",\n            \"email\": \"demo@example.com\"\n        },\n        \"order_details\": [\n            {\n                \"id\": 1,\n                \"lesson\": {\n                    \"id\": 1,\n                    \"lesson_name\": \"Laravel Developer\",\n                    \"description\": \"Kumpulan video course untuk belajar menjadi seorang fullstack developer.\",\n                    \"price\": 250000,\n                    \"image_cover_url\": \"https://kawankoding.com/photos/1/kelas/youtube-laravel-8-livewire.png\",\n                    \"video_preview_url\": \"https://www.youtube.com/watch?v=zjS45FPdd3c\",\n                    \"category\": {\n                        \"id\": 1,\n                        \"category_name\": \"Full Stack\",\n                        \"slug\": \"full-stack\"\n                    }\n                }\n            }\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Order Detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/api/orders/2",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Order Detail",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server}}/api/orders/2",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"api",
+										"orders",
+										"2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Sep 2021 11:57:50 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1079"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": true,\n    \"message\": \"OK!\",\n    \"errors\": null,\n    \"data\": {\n        \"id\": 2,\n        \"invoice_code\": \"INV-2021926APGATL\",\n        \"status\": \"unpaid\",\n        \"total_order\": 600000,\n        \"created_at\": \"2021-09-26T11:40:10.406142Z\",\n        \"updated_at\": \"2021-09-26T11:40:10.406143Z\",\n        \"user\": {\n            \"id\": 2,\n            \"name\": \"Akun Demo User\",\n            \"email\": \"demo@example.com\"\n        },\n        \"order_details\": [\n            {\n                \"id\": 2,\n                \"lesson\": {\n                    \"id\": 1,\n                    \"lesson_name\": \"Laravel Developer\",\n                    \"description\": \"Kumpulan video course untuk belajar menjadi seorang fullstack developer.\",\n                    \"price\": 250000,\n                    \"image_cover_url\": \"https://kawankoding.com/photos/1/kelas/youtube-laravel-8-livewire.png\",\n                    \"video_preview_url\": \"https://www.youtube.com/watch?v=zjS45FPdd3c\",\n                    \"category\": {\n                        \"id\": 1,\n                        \"category_name\": \"Full Stack\",\n                        \"slug\": \"full-stack\"\n                    }\n                }\n            },\n            {\n                \"id\": 3,\n                \"lesson\": {\n                    \"id\": 2,\n                    \"lesson_name\": \"Belajar Golang Untuk Pemula\",\n                    \"description\": \"video course untuk belajar menjadi mahir golang.\",\n                    \"price\": 350000,\n                    \"image_cover_url\": \"https://miro.medium.com/max/1400/0*7vQ8eRc28yz9k__r.png\",\n                    \"video_preview_url\": \"https://youtu.be/nyGu8Xn5b3g?list=PL-CtdCApEFH_t5_dtCQZgWJqWF45WRgZw\",\n                    \"category\": {\n                        \"id\": 3,\n                        \"category_name\": \"Back End\",\n                        \"slug\": \"back-end\"\n                    }\n                }\n            }\n        ]\n    }\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{api_token}}",
+				"type": "string"
+			},
+			{
+				"key": "password",
+				"value": "{{bearer}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "server",
+			"value": "http://127.0.0.1:8080"
+		},
+		{
+			"key": "api_token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMiIsImV4cCI6MTY2NDA4OTQ2NCwiaWF0IjoxNjMyNTUzNDY0LCJpc3MiOiJhZG1pbiJ9.lvgjTRLXsUkr9HEJFkn0E4wp14eocBQRkXPkCRUT4aY"
+		}
+	]
+}

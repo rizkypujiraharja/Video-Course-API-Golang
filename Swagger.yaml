@@ -1,0 +1,1550 @@
+openapi: 3.0.0
+info:
+  title: Video Course
+  description: Silahkan login terlebih dahulu untuk mendapatkan token dan masukkan kedalam Authorize
+  version: 1.0.0
+servers:
+  - url: https://video-course-api.herokuapp.com
+components:
+  securitySchemes:
+    noauthAuth:
+      type: http
+      scheme: noauth
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+  - bearerAuth: []
+tags:
+  - name: Auth
+  - name: Category
+  - name: Lesson
+  - name: Sub Lesson
+  - name: Video Lesson
+  - name: Order
+paths:
+  /api/auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Akun Demo User
+                email: demo@example.com
+                password: secret
+      security:
+        - noauthAuth: []
+      responses:
+        '201':
+          description: Created
+          headers:
+            Server:
+              schema:
+                type: string
+                example: Cowboy
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Sun, 26 Sep 2021 10:44:26 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '293'
+            Via:
+              schema:
+                type: number
+                example: 1.1 vegur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                errors: null
+                data:
+                  id: 1
+                  name: Akun Administrator
+                  email: admin@example.com
+                  token: >-
+                    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSIsImV4cCI6MTY2NDE4OTA2NiwiaWF0IjoxNjMyNjUzMDY2LCJpc3MiOiJhZG1pbiJ9.CyUnH9A0_LlEL1NWRWcWZMRwYziPnmrjlus3JyHDnKw
+  /api/auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: admin@example.com
+                password: secret
+      security:
+        - noauthAuth: []
+      responses:
+        '200':
+          description: OK
+          headers:
+            Server:
+              schema:
+                type: string
+                example: Cowboy
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Sun, 26 Sep 2021 10:45:32 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '293'
+            Via:
+              schema:
+                type: number
+                example: 1.1 vegur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                errors: null
+                data:
+                  id: 1
+                  name: Akun Administrator
+                  email: admin@example.com
+                  token: >-
+                    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSIsImV4cCI6MTY2NDE4OTEzMiwiaWF0IjoxNjMyNjUzMTMyLCJpc3MiOiJhZG1pbiJ9.oxMOSDYSUIzMRtWLtBo2S44io61PNuE655zwMAMDYxI
+        '401':
+          description: Unauthorized
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Fri, 24 Sep 2021 08:14:12 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '106'
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: false
+                message: Failed to login
+                errors:
+                  - failed to login. check your credential
+                data: {}
+  /api/profile:
+    get:
+      tags:
+        - Auth
+      summary: My Profile
+      responses:
+        '200':
+          description: OK
+          headers:
+            Server:
+              schema:
+                type: string
+                example: Cowboy
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Sun, 26 Sep 2021 10:46:06 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '111'
+            Via:
+              schema:
+                type: number
+                example: 1.1 vegur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK
+                errors: null
+                data:
+                  id: 2
+                  name: Akun Demo User
+                  email: demo@example.com
+    put:
+      tags:
+        - Auth
+      summary: Update Profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Administrator
+                email: admin@example.com
+      responses:
+        '200':
+          description: OK
+          headers:
+            Server:
+              schema:
+                type: string
+                example: Cowboy
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Sun, 26 Sep 2021 10:46:39 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '111'
+            Via:
+              schema:
+                type: number
+                example: 1.1 vegur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK
+                errors: null
+                data:
+                  id: 2
+                  name: Administrator
+                  email: admin@example.com
+  /api/categories:
+    get:
+      tags:
+        - Category
+      summary: Index Category
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: ''
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          headers:
+            Server:
+              schema:
+                type: string
+                example: Cowboy
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Sun, 26 Sep 2021 10:48:43 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '222'
+            Via:
+              schema:
+                type: number
+                example: 1.1 vegur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                errors: null
+                data:
+                  - id: 1
+                    category_name: Full Stack
+                    slug: full-stack
+                  - id: 2
+                    category_name: Front End
+                    slug: front-end
+                  - id: 3
+                    category_name: Back End
+                    slug: back-end
+    post:
+      tags:
+        - Category
+      summary: Create Category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Back End
+      parameters:
+        - name: ''
+          in: header
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Created
+          headers:
+            Server:
+              schema:
+                type: string
+                example: Cowboy
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Sun, 26 Sep 2021 10:48:31 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '106'
+            Via:
+              schema:
+                type: number
+                example: 1.1 vegur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                errors: null
+                data:
+                  id: 3
+                  category_name: Back End
+                  slug: back-end
+  /api/categories/{categoryId}:
+    parameters:
+      - in: path
+        name: categoryId
+        schema:
+          type: integer
+        required: true
+    put:
+      tags:
+        - Category
+      summary: Update Category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Front End
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Category
+      summary: Delete Category
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/lessons:
+    get:
+      tags:
+        - Lesson
+      summary: Index Lesson
+      parameters:
+        - name: ''
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          headers:
+            Server:
+              schema:
+                type: string
+                example: Cowboy
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Sun, 26 Sep 2021 10:54:31 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '791'
+            Via:
+              schema:
+                type: number
+                example: 1.1 vegur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                errors: null
+                data:
+                  - id: 1
+                    lesson_name: Laravel Developer
+                    description: >-
+                      Kumpulan video course untuk belajar menjadi seorang
+                      fullstack developer.
+                    price: 250000
+                    image_cover_url: >-
+                      https://kawankoding.com/photos/1/kelas/youtube-laravel-8-livewire.png
+                    video_preview_url: https://www.youtube.com/watch?v=zjS45FPdd3c
+                    category:
+                      id: 1
+                      category_name: Full Stack
+                      slug: full-stack
+                  - id: 2
+                    lesson_name: Belajar Golang Untuk Pemula
+                    description: video course untuk belajar menjadi mahir golang.
+                    price: 350000
+                    image_cover_url: https://miro.medium.com/max/1400/0*7vQ8eRc28yz9k__r.png
+                    video_preview_url: >-
+                      https://youtu.be/nyGu8Xn5b3g?list=PL-CtdCApEFH_t5_dtCQZgWJqWF45WRgZw
+                    category:
+                      id: 3
+                      category_name: Back End
+                      slug: back-end
+    post:
+      tags:
+        - Lesson
+      summary: Create Lesson
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: Belajar Golang Untuk Pemula
+                description: video course untuk belajar menjadi mahir golang.
+                price: 350000
+                image_cover_url: https://miro.medium.com/max/1400/0*7vQ8eRc28yz9k__r.png
+                video_preview_url: >-
+                  https://youtu.be/nyGu8Xn5b3g?list=PL-CtdCApEFH_t5_dtCQZgWJqWF45WRgZw
+                category_id: 3
+      parameters:
+        - name: ''
+          in: header
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Created
+          headers:
+            Server:
+              schema:
+                type: string
+                example: Cowboy
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Sun, 26 Sep 2021 10:54:07 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '417'
+            Via:
+              schema:
+                type: number
+                example: 1.1 vegur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                errors: null
+                data:
+                  id: 2
+                  lesson_name: Belajar Golang Untuk Pemula
+                  description: video course untuk belajar menjadi mahir golang.
+                  price: 350000
+                  image_cover_url: https://miro.medium.com/max/1400/0*7vQ8eRc28yz9k__r.png
+                  video_preview_url: >-
+                    https://youtu.be/nyGu8Xn5b3g?list=PL-CtdCApEFH_t5_dtCQZgWJqWF45WRgZw
+                  category:
+                    id: 3
+                    category_name: Back End
+                    slug: back-end
+  /api/my-lessons:
+    get:
+      tags:
+        - Lesson
+      summary: My Lesson
+      parameters:
+        - name: ''
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          headers:
+            Server:
+              schema:
+                type: string
+                example: Cowboy
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Sun, 26 Sep 2021 11:59:08 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '426'
+            Via:
+              schema:
+                type: number
+                example: 1.1 vegur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                errors: null
+                data:
+                  - id: 1
+                    lesson_name: Laravel Developer
+                    description: >-
+                      Kumpulan video course untuk belajar menjadi seorang
+                      fullstack developer.
+                    price: 250000
+                    image_cover_url: >-
+                      https://kawankoding.com/photos/1/kelas/youtube-laravel-8-livewire.png
+                    video_preview_url: https://www.youtube.com/watch?v=zjS45FPdd3c
+                    category:
+                      id: 1
+                      category_name: Full Stack
+                      slug: full-stack
+  /api/lessons/{lessonId}:
+    parameters:
+      - in: path
+        name: lessonId
+        schema:
+          type: integer
+        required: true
+    get:
+      tags:
+        - Lesson
+      summary: Show Lesson By User / Admin
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMiIsImV4cCI6MTY2NDAwODY1MiwiaWF0IjoxNjMyNDcyNjUyLCJpc3MiOiJhZG1pbiJ9.Duaojdoirr20jdqs2n0FP__oVJ6o2-8EewP68Adrpec
+      responses:
+        '200':
+          description: OK
+          headers:
+            Server:
+              schema:
+                type: string
+                example: Cowboy
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Sun, 26 Sep 2021 11:36:52 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '1536'
+            Via:
+              schema:
+                type: number
+                example: 1.1 vegur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                errors: null
+                data:
+                  id: 1
+                  lesson_name: Laravel Developer
+                  description: >-
+                    Kumpulan video course untuk belajar menjadi seorang
+                    fullstack developer.
+                  price: 250000
+                  image_cover_url: >-
+                    https://kawankoding.com/photos/1/kelas/youtube-laravel-8-livewire.png
+                  video_preview_url: https://www.youtube.com/watch?v=zjS45FPdd3c
+                  category:
+                    id: 1
+                    category_name: Full Stack
+                    slug: full-stack
+                  sub_lessons:
+                    - id: 1
+                      sub_lesson_title: Berkenalan Dengan Laravel
+                      videos:
+                        - id: 1
+                          lesson_name: Pengenalan Laravel
+                          description: Berkenalan dulu dengan laravel
+                          video_url: >-
+                            https://youtu.be/geIv2xHW48A?list=PLEgI20pG1Dqz6wCJUT8VKYCxIjtBhBxi8
+                        - id: 2
+                          lesson_name: Installasi Laravel
+                          description: Langkah-langkah Installasi Laravel
+                          video_url: >-
+                            https://youtu.be/PrSP9EHXJJo?list=PLEgI20pG1Dqz6wCJUT8VKYCxIjtBhBxi8
+                        - id: 3
+                          lesson_name: Pembuatan Auth
+                          description: Langkah-langkah membuat auth dan setting database
+                          video_url: >-
+                            https://youtu.be/dSMBQ7gWpXg?list=PLEgI20pG1Dqz6wCJUT8VKYCxIjtBhBxi8
+                    - id: 2
+                      sub_lesson_title: Eloquet Relationship
+                      videos:
+                        - id: 4
+                          lesson_name: Apa Itu Eloquent
+                          description: mempelajari eloquent lebih dalam
+                          video_url: >-
+                            https://youtu.be/UD889BdKWK4?list=PLEgI20pG1Dqz6wCJUT8VKYCxIjtBhBxi8
+                        - id: 5
+                          lesson_name: Relation Has One
+                          description: Belajar Relasi has one
+                          video_url: https://youtu.be/SL2vjRDhaoI
+                        - id: 6
+                          lesson_name: Relation BelongsTo
+                          description: Belajar Relasi BelongsTo
+                          video_url: https://youtu.be/JU4hQILRKog
+    put:
+      tags:
+        - Lesson
+      summary: Update Lesson
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: Laravel Developer
+                description: >-
+                  Kumpulan video course untuk belajar menjadi seorang fullstack
+                  developer.
+                price: 250000
+                image_cover_url: >-
+                  https://kawankoding.com/photos/1/kelas/youtube-laravel-8-livewire.png
+                video_preview_url: https://www.youtube.com/watch?v=zjS45FPdd3c
+                category_id: 1
+      responses:
+        '200':
+          description: OK
+          headers:
+            Server:
+              schema:
+                type: string
+                example: Cowboy
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Sun, 26 Sep 2021 10:49:48 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '424'
+            Via:
+              schema:
+                type: number
+                example: 1.1 vegur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                errors: null
+                data:
+                  id: 1
+                  lesson_name: Laravel Developer
+                  description: >-
+                    Kumpulan video course untuk belajar menjadi seorang
+                    fullstack developer.
+                  price: 250000
+                  image_cover_url: >-
+                    https://kawankoding.com/photos/1/kelas/youtube-laravel-8-livewire.png
+                  video_preview_url: https://www.youtube.com/watch?v=zjS45FPdd3c
+                  category:
+                    id: 1
+                    category_name: Full Stack
+                    slug: full-stack
+    delete:
+      tags:
+        - Lesson
+      summary: Delete Lesson
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/lessons/public/{lessonId}:
+    parameters:
+      - in: path
+        name: lessonId
+        schema:
+          type: integer
+        required: true
+    get:
+      tags:
+        - Lesson
+      summary: Show Lesson By Guest
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMiIsImV4cCI6MTY2NDAwODY1MiwiaWF0IjoxNjMyNDcyNjUyLCJpc3MiOiJhZG1pbiJ9.Duaojdoirr20jdqs2n0FP__oVJ6o2-8EewP68Adrpec
+      responses:
+        '200':
+          description: OK
+          headers:
+            Server:
+              schema:
+                type: string
+                example: Cowboy
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Sun, 26 Sep 2021 11:37:10 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '547'
+            Via:
+              schema:
+                type: number
+                example: 1.1 vegur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                errors: null
+                data:
+                  id: 1
+                  lesson_name: Laravel Developer
+                  description: >-
+                    Kumpulan video course untuk belajar menjadi seorang
+                    fullstack developer.
+                  price: 250000
+                  image_cover_url: >-
+                    https://kawankoding.com/photos/1/kelas/youtube-laravel-8-livewire.png
+                  video_preview_url: https://www.youtube.com/watch?v=zjS45FPdd3c
+                  category:
+                    id: 1
+                    category_name: Full Stack
+                    slug: full-stack
+                  sub_lessons:
+                    - id: 1
+                      sub_lesson_title: Berkenalan Dengan Laravel
+                    - id: 2
+                      sub_lesson_title: Eloquet Relationship
+  /api/sub-lessons:
+    post:
+      tags:
+        - Sub Lesson
+      summary: Create Sub Lesson
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: Struktur Folder Pada Project Laravel
+                lesson_id: 1
+      parameters:
+        - name: ''
+          in: header
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Created
+          headers:
+            Server:
+              schema:
+                type: string
+                example: Cowboy
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Sun, 26 Sep 2021 11:03:09 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '119'
+            Via:
+              schema:
+                type: number
+                example: 1.1 vegur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                errors: null
+                data:
+                  id: 2
+                  sub_lesson_title: Struktur Folder Pada Project Laravel
+  /api/sub-lessons/{subLessonId}:
+    parameters:
+      - in: path
+        name: subLessonId
+        schema:
+          type: integer
+        required: true
+    put:
+      tags:
+        - Sub Lesson
+      summary: Update Sub Lesson
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: Eloquet Relationship
+                lesson_id: 1
+      responses:
+        '200':
+          description: OK
+          headers:
+            Server:
+              schema:
+                type: string
+                example: Cowboy
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Sun, 26 Sep 2021 11:04:02 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '108'
+            Via:
+              schema:
+                type: number
+                example: 1.1 vegur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                errors: null
+                data:
+                  id: 1
+                  sub_lesson_title: Berkenalan Dengan Laravel
+    delete:
+      tags:
+        - Sub Lesson
+      summary: Delete Sub Lesson
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/videos:
+    post:
+      tags:
+        - Video Lesson
+      summary: Create Video
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: Relation BelongsTo
+                sub_lesson_id: 2
+                description: Belajar Relasi BelongsTo
+                video_url: https://youtu.be/JU4hQILRKog
+      parameters:
+        - name: ''
+          in: header
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Created
+          headers:
+            Server:
+              schema:
+                type: string
+                example: Cowboy
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Sun, 26 Sep 2021 11:09:19 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '241'
+            Via:
+              schema:
+                type: number
+                example: 1.1 vegur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                errors: null
+                data:
+                  id: 3
+                  lesson_name: Pembuatan Auth
+                  description: Langkah-langkah membuat auth dan setting database
+                  video_url: >-
+                    https://youtu.be/dSMBQ7gWpXg?list=PLEgI20pG1Dqz6wCJUT8VKYCxIjtBhBxi8
+  /api/videos/{videoId}:
+    parameters:
+      - in: path
+        name: videoId
+        schema:
+          type: integer
+        required: true
+    put:
+      tags:
+        - Video Lesson
+      summary: Update Video
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: Installasi Laravel
+                sub_lesson_id: 1
+                description: Langkah-langkah Installasi Laravel
+                video_url: >-
+                  https://youtu.be/PrSP9EHXJJo?list=PLEgI20pG1Dqz6wCJUT8VKYCxIjtBhBxi8
+      responses:
+        '200':
+          description: OK
+          headers:
+            Server:
+              schema:
+                type: string
+                example: Cowboy
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Sun, 26 Sep 2021 11:08:30 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '230'
+            Via:
+              schema:
+                type: number
+                example: 1.1 vegur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                errors: null
+                data:
+                  id: 2
+                  lesson_name: Installasi Laravel
+                  description: Langkah-langkah Installasi Laravel
+                  video_url: >-
+                    https://youtu.be/PrSP9EHXJJo?list=PLEgI20pG1Dqz6wCJUT8VKYCxIjtBhBxi8
+    delete:
+      tags:
+        - Video Lesson
+      summary: Delete Video
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/orders:
+    post:
+      tags:
+        - Order
+      summary: Create Order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                lesson_ids:
+                  - 1
+                  - 2
+      responses:
+        '201':
+          description: Created
+          headers:
+            Server:
+              schema:
+                type: string
+                example: Cowboy
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Sun, 26 Sep 2021 11:40:10 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '288'
+            Via:
+              schema:
+                type: number
+                example: 1.1 vegur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                errors: null
+                data:
+                  id: 2
+                  invoice_code: INV-2021926APGATL
+                  status: unpaid
+                  total_order: 600000
+                  created_at: '2021-09-26T11:40:10.406142Z'
+                  updated_at: '2021-09-26T11:40:10.406143Z'
+                  user:
+                    id: 2
+                    name: Akun Demo User
+                    email: demo@example.com
+    get:
+      tags:
+        - Order
+      summary: Index Order
+      responses:
+        '200':
+          description: OK
+          headers:
+            Server:
+              schema:
+                type: string
+                example: Cowboy
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Sun, 26 Sep 2021 11:57:01 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '526'
+            Via:
+              schema:
+                type: number
+                example: 1.1 vegur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                errors: null
+                data:
+                  - id: 1
+                    invoice_code: INV-2021926GMWJGS
+                    status: unpaid
+                    total_order: 250000
+                    created_at: '2021-09-26T11:40:00.063347Z'
+                    updated_at: '2021-09-26T11:40:00.063347Z'
+                    user:
+                      id: 2
+                      name: Akun Demo User
+                      email: demo@example.com
+                  - id: 2
+                    invoice_code: INV-2021926APGATL
+                    status: unpaid
+                    total_order: 600000
+                    created_at: '2021-09-26T11:40:10.406142Z'
+                    updated_at: '2021-09-26T11:40:10.406143Z'
+                    user:
+                      id: 2
+                      name: Akun Demo User
+                      email: demo@example.com
+  /api/my-orders:
+    get:
+      tags:
+        - Order
+      summary: My Order
+      responses:
+        '200':
+          description: OK
+          headers:
+            Server:
+              schema:
+                type: string
+                example: Cowboy
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Sun, 26 Sep 2021 11:40:45 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '526'
+            Via:
+              schema:
+                type: number
+                example: 1.1 vegur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                errors: null
+                data:
+                  - id: 1
+                    invoice_code: INV-2021926GMWJGS
+                    status: unpaid
+                    total_order: 250000
+                    created_at: '2021-09-26T11:40:00.063347Z'
+                    updated_at: '2021-09-26T11:40:00.063347Z'
+                    user:
+                      id: 2
+                      name: Akun Demo User
+                      email: demo@example.com
+                  - id: 2
+                    invoice_code: INV-2021926APGATL
+                    status: unpaid
+                    total_order: 600000
+                    created_at: '2021-09-26T11:40:10.406142Z'
+                    updated_at: '2021-09-26T11:40:10.406143Z'
+                    user:
+                      id: 2
+                      name: Akun Demo User
+                      email: demo@example.com
+  /api/orders/paid/{oderId}:
+    parameters:
+      - in: path
+        name: oderId
+        schema:
+          type: integer
+        required: true
+    put:
+      tags:
+        - Order
+      summary: Change status to paid
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: OK
+          headers:
+            Server:
+              schema:
+                type: string
+                example: Cowboy
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Sun, 26 Sep 2021 11:57:27 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '694'
+            Via:
+              schema:
+                type: number
+                example: 1.1 vegur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                errors: null
+                data:
+                  id: 1
+                  invoice_code: INV-2021926GMWJGS
+                  status: paid
+                  total_order: 250000
+                  created_at: '2021-09-26T11:40:00.063347Z'
+                  updated_at: '2021-09-26T11:57:27.814202Z'
+                  user:
+                    id: 2
+                    name: Akun Demo User
+                    email: demo@example.com
+                  order_details:
+                    - id: 1
+                      lesson:
+                        id: 1
+                        lesson_name: Laravel Developer
+                        description: >-
+                          Kumpulan video course untuk belajar menjadi seorang
+                          fullstack developer.
+                        price: 250000
+                        image_cover_url: >-
+                          https://kawankoding.com/photos/1/kelas/youtube-laravel-8-livewire.png
+                        video_preview_url: https://www.youtube.com/watch?v=zjS45FPdd3c
+                        category:
+                          id: 1
+                          category_name: Full Stack
+                          slug: full-stack
+  /api/orders/unpaid/{orderId}:
+    parameters:
+      - in: path
+        name: orderId
+        schema:
+          type: integer
+        required: true
+    put:
+      tags:
+        - Order
+      summary: Change status to unpaid
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: OK
+          headers:
+            Server:
+              schema:
+                type: string
+                example: Cowboy
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Sun, 26 Sep 2021 11:57:41 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '696'
+            Via:
+              schema:
+                type: number
+                example: 1.1 vegur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                errors: null
+                data:
+                  id: 1
+                  invoice_code: INV-2021926GMWJGS
+                  status: unpaid
+                  total_order: 250000
+                  created_at: '2021-09-26T11:40:00.063347Z'
+                  updated_at: '2021-09-26T11:57:41.807181Z'
+                  user:
+                    id: 2
+                    name: Akun Demo User
+                    email: demo@example.com
+                  order_details:
+                    - id: 1
+                      lesson:
+                        id: 1
+                        lesson_name: Laravel Developer
+                        description: >-
+                          Kumpulan video course untuk belajar menjadi seorang
+                          fullstack developer.
+                        price: 250000
+                        image_cover_url: >-
+                          https://kawankoding.com/photos/1/kelas/youtube-laravel-8-livewire.png
+                        video_preview_url: https://www.youtube.com/watch?v=zjS45FPdd3c
+                        category:
+                          id: 1
+                          category_name: Full Stack
+                          slug: full-stack
+  /api/orders/{orderId}:
+    parameters:
+      - in: path
+        name: orderId
+        schema:
+          type: integer
+        required: true
+    get:
+      tags:
+        - Order
+      summary: Order Detail
+      responses:
+        '200':
+          description: OK
+          headers:
+            Server:
+              schema:
+                type: string
+                example: Cowboy
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Sun, 26 Sep 2021 11:57:50 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '1079'
+            Via:
+              schema:
+                type: number
+                example: 1.1 vegur
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                errors: null
+                data:
+                  id: 2
+                  invoice_code: INV-2021926APGATL
+                  status: unpaid
+                  total_order: 600000
+                  created_at: '2021-09-26T11:40:10.406142Z'
+                  updated_at: '2021-09-26T11:40:10.406143Z'
+                  user:
+                    id: 2
+                    name: Akun Demo User
+                    email: demo@example.com
+                  order_details:
+                    - id: 2
+                      lesson:
+                        id: 1
+                        lesson_name: Laravel Developer
+                        description: >-
+                          Kumpulan video course untuk belajar menjadi seorang
+                          fullstack developer.
+                        price: 250000
+                        image_cover_url: >-
+                          https://kawankoding.com/photos/1/kelas/youtube-laravel-8-livewire.png
+                        video_preview_url: https://www.youtube.com/watch?v=zjS45FPdd3c
+                        category:
+                          id: 1
+                          category_name: Full Stack
+                          slug: full-stack
+                    - id: 3
+                      lesson:
+                        id: 2
+                        lesson_name: Belajar Golang Untuk Pemula
+                        description: video course untuk belajar menjadi mahir golang.
+                        price: 350000
+                        image_cover_url: >-
+                          https://miro.medium.com/max/1400/0*7vQ8eRc28yz9k__r.png
+                        video_preview_url: >-
+                          https://youtu.be/nyGu8Xn5b3g?list=PL-CtdCApEFH_t5_dtCQZgWJqWF45WRgZw
+                        category:
+                          id: 3
+                          category_name: Back End
+                          slug: back-end
