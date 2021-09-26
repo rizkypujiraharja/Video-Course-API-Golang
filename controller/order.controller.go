@@ -13,7 +13,7 @@ import (
 
 type OrderController interface {
 	All(ctx *gin.Context)
-	HistoryOrder(ctx *gin.Context)
+	MyOrder(ctx *gin.Context)
 	CreateOrder(ctx *gin.Context)
 	FindOneOrderByID(ctx *gin.Context)
 	UpdatePaidOrder(ctx *gin.Context)
@@ -45,7 +45,7 @@ func (c *orderController) All(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, response)
 }
 
-func (c *orderController) HistoryOrder(ctx *gin.Context) {
+func (c *orderController) MyOrder(ctx *gin.Context) {
 	userId := c.jwtService.GetUserId(ctx)
 
 	orders, err := c.orderService.FindOrderByUserID(userId)
@@ -85,12 +85,14 @@ func (c *orderController) CreateOrder(ctx *gin.Context) {
 func (c *orderController) FindOneOrderByID(ctx *gin.Context) {
 	id := ctx.Param("id")
 
-	res, err := c.orderService.FindOneOrderByID(id)
+	order, err := c.orderService.FindOneOrderByID(id)
 	if err != nil {
 		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 		return
 	}
+
+	res := resource.NewOrderResponse(*order)
 
 	response := response.BuildResponse(true, "OK!", res)
 	ctx.JSON(http.StatusOK, response)

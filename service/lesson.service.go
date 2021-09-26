@@ -12,6 +12,7 @@ import (
 
 type LessonService interface {
 	All() (*[]entity.Lesson, error)
+	MyLesson(userID string) (*[]entity.OrderedLesson, error)
 	CreateLesson(lessonRequest request.CreateLessonRequest) (*entity.Lesson, error)
 	UpdateLesson(updateLessonRequest request.UpdateLessonRequest) (*entity.Lesson, error)
 	FindOneLessonByID(lessonID string) (*entity.Lesson, error)
@@ -19,17 +20,28 @@ type LessonService interface {
 }
 
 type lessonService struct {
-	lessonRepo repo.LessonRepository
+	lessonRepo        repo.LessonRepository
+	orderedLessonRepo repo.OrderedLessonRepository
 }
 
-func NewLessonService(lessonRepo repo.LessonRepository) LessonService {
+func NewLessonService(lessonRepo repo.LessonRepository, orderedLessonRepo repo.OrderedLessonRepository) LessonService {
 	return &lessonService{
-		lessonRepo: lessonRepo,
+		lessonRepo:        lessonRepo,
+		orderedLessonRepo: orderedLessonRepo,
 	}
 }
 
 func (c *lessonService) All() (*[]entity.Lesson, error) {
 	lessons, err := c.lessonRepo.All()
+	if err != nil {
+		return nil, err
+	}
+
+	return &lessons, nil
+}
+
+func (c *lessonService) MyLesson(userID string) (*[]entity.OrderedLesson, error) {
+	lessons, err := c.orderedLessonRepo.FindOrderedLessonByUserID(userID)
 	if err != nil {
 		return nil, err
 	}

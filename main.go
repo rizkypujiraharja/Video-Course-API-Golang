@@ -14,6 +14,8 @@ import (
 var (
 	db *gorm.DB = config.SetupDatabaseConnection()
 
+	orderedLessonRepo repo.OrderedLessonRepository = repo.NewOrderedLessonRepo(db)
+
 	jwtService     service.JWTService        = service.NewJWTService()
 	userService    service.UserService       = service.NewUserService(userRepo)
 	authController controller.AuthController = controller.NewAuthController(authService, jwtService, userService)
@@ -27,7 +29,7 @@ var (
 	categoryController controller.CategoryController = controller.NewCategoryController(categoryService, jwtService)
 
 	lessonRepo       repo.LessonRepository       = repo.NewLessonRepo(db)
-	lessonService    service.LessonService       = service.NewLessonService(lessonRepo)
+	lessonService    service.LessonService       = service.NewLessonService(lessonRepo, orderedLessonRepo)
 	lessonController controller.LessonController = controller.NewLessonController(lessonService, jwtService)
 
 	subLessonRepo       repo.SubLessonRepository       = repo.NewSubLessonRepo(db)
@@ -40,7 +42,7 @@ var (
 
 	orderRepo       repo.OrderRepository       = repo.NewOrderRepo(db)
 	orderDetailRepo repo.OrderDetailRepository = repo.NewOrderDetailRepo(db)
-	orderService    service.OrderService       = service.NewOrderService(orderRepo, orderDetailRepo, lessonRepo)
+	orderService    service.OrderService       = service.NewOrderService(orderRepo, orderDetailRepo, orderedLessonRepo, lessonRepo)
 	orderController controller.OrderController = controller.NewOrderController(orderService, jwtService)
 )
 
@@ -53,6 +55,7 @@ func main() {
 		&entity.Video{},
 		&entity.Order{},
 		&entity.OrderDetail{},
+		&entity.OrderedLesson{},
 	)
 	defer config.CloseDatabaseConnection(db)
 	server := gin.Default()
@@ -84,6 +87,7 @@ func main() {
 		publicLessonRoutes.GET("/:id", lessonController.FindOneLessonByID)
 	}
 
+	server.GET("/api/my-lessons", middleware.AuthorizeJWT(jwtService, "user"), lessonController.MyLesson)
 	lessonRoutes := server.Group("api/lessons", middleware.AuthorizeJWT(jwtService, "admin"))
 	{
 		lessonRoutes.POST("/", lessonController.CreateLesson)
@@ -107,8 +111,9 @@ func main() {
 		videoRoutes.DELETE("/:id", videoController.DeleteVideo)
 	}
 
+	server.GET("/api/my-orders", middleware.AuthorizeJWT(jwtService, "user"), orderController.MyOrder)
 	server.POST("/api/orders", middleware.AuthorizeJWT(jwtService, "user"), orderController.CreateOrder)
-	server.GET("/api/orders/history", middleware.AuthorizeJWT(jwtService, "user"), orderController.HistoryOrder)
+	server.GET("/api/orders/:id", middleware.AuthorizeJWT(jwtService, "user", "admin"), orderController.FindOneOrderByID)
 	adminOrderRoutes := server.Group("api/orders", middleware.AuthorizeJWT(jwtService, "admin"))
 	{
 		adminOrderRoutes.GET("/", orderController.All)

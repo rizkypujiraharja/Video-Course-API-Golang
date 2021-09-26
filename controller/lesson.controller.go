@@ -14,6 +14,7 @@ import (
 
 type LessonController interface {
 	All(ctx *gin.Context)
+	MyLesson(ctx *gin.Context)
 	CreateLesson(ctx *gin.Context)
 	UpdateLesson(ctx *gin.Context)
 	DeleteLesson(ctx *gin.Context)
@@ -40,6 +41,20 @@ func (c *lessonController) All(ctx *gin.Context) {
 		return
 	}
 	res := resource.NewLessonArrayResponse(*lessons)
+	response := response.BuildResponse(true, "OK!", res)
+	ctx.JSON(http.StatusOK, response)
+}
+
+func (c *lessonController) MyLesson(ctx *gin.Context) {
+	userId := c.jwtService.GetUserId(ctx)
+
+	lessons, err := c.lessonService.MyLesson(userId)
+	if err != nil {
+		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
+		return
+	}
+	res := resource.NewLessonFromOrderedLessonArrayResponse(*lessons)
 	response := response.BuildResponse(true, "OK!", res)
 	ctx.JSON(http.StatusOK, response)
 }

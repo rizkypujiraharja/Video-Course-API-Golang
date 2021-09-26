@@ -44,3 +44,20 @@ func NewLessonArrayResponse(lessons []entity.Lesson) []LessonResponse {
 	}
 	return lessonRes
 }
+
+func NewLessonFromOrderedLessonArrayResponse(orderedLessons []entity.OrderedLesson) []LessonResponse {
+	lessonRes := []LessonResponse{}
+	for _, v := range orderedLessons {
+		p := LessonResponse{
+			ID:              v.Lesson.ID,
+			LessonTitle:     v.Lesson.Title,
+			Description:     v.Lesson.Description,
+			Price:           v.Lesson.Price,
+			ImageCoverUrl:   v.Lesson.ImageCoverUrl,
+			VideoPreviewUrl: v.Lesson.VideoPreviewUrl,
+			Category:        NewCategoryResponse(v.Lesson.Category),
+		}
+		lessonRes = append(lessonRes, p)
+	}
+	return lessonRes
+}

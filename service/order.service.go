@@ -39,16 +39,18 @@ type OrderService interface {
 }
 
 type orderService struct {
-	orderRepo       repo.OrderRepository
-	orderDetailRepo repo.OrderDetailRepository
-	lessonRepo      repo.LessonRepository
+	orderRepo         repo.OrderRepository
+	orderDetailRepo   repo.OrderDetailRepository
+	orderedLessonRepo repo.OrderedLessonRepository
+	lessonRepo        repo.LessonRepository
 }
 
-func NewOrderService(orderRepo repo.OrderRepository, orderDetailRepo repo.OrderDetailRepository, lessonRepo repo.LessonRepository) OrderService {
+func NewOrderService(orderRepo repo.OrderRepository, orderDetailRepo repo.OrderDetailRepository, orderedLessonRepo repo.OrderedLessonRepository, lessonRepo repo.LessonRepository) OrderService {
 	return &orderService{
-		orderRepo:       orderRepo,
-		orderDetailRepo: orderDetailRepo,
-		lessonRepo:      lessonRepo,
+		orderRepo:         orderRepo,
+		orderDetailRepo:   orderDetailRepo,
+		orderedLessonRepo: orderedLessonRepo,
+		lessonRepo:        lessonRepo,
 	}
 }
 
@@ -130,12 +132,28 @@ func (c *orderService) FindOneOrderByID(orderID string) (*entity.Order, error) {
 
 func (c *orderService) UpdatePaidOrder(orderID string) (*entity.Order, error) {
 	order, err := c.orderRepo.FindOneOrderByID(orderID)
+	fmt.Println(order)
 	if err != nil {
 		return nil, err
 	}
 
 	if err != nil {
 		return nil, err
+	}
+
+	if order.Status == "paid" {
+		return &order, nil
+	}
+
+	for _, detail := range order.OrderDetails {
+		var orderedLesson entity.OrderedLesson
+		orderedLesson.LessonID = detail.LessonID
+		orderedLesson.UserID = order.UserID
+
+		c.orderedLessonRepo.InsertOrderedLesson(orderedLesson)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	order.Status = "paid"
@@ -158,6 +176,12 @@ func (c *orderService) UpdateUnpaidOrder(orderID string) (*entity.Order, error) 
 	if err != nil {
 		return nil, err
 	}
+
+	if order.Status == "unpaid" {
+		return &order, nil
+	}
+
+	c.orderedLessonRepo.DeleteOrderedLessonByUserID(strconv.Itoa(int(order.UserID)))
 
 	order.Status = "unpaid"
 
