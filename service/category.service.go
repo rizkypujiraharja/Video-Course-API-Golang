@@ -9,15 +9,13 @@ import (
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/entity"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/repo"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/request"
-
-	_category "github.com/rizkypujiraharja/Video-Course-API-Golang/service/category"
 )
 
 type CategoryService interface {
-	All() (*[]_category.CategoryResponse, error)
-	CreateCategory(categoryRequest request.CreateCategoryRequest) (*_category.CategoryResponse, error)
-	UpdateCategory(updateCategoryRequest request.UpdateCategoryRequest) (*_category.CategoryResponse, error)
-	FindOneCategoryByID(categoryID string) (*_category.CategoryResponse, error)
+	All() (*[]entity.Category, error)
+	CreateCategory(categoryRequest request.CreateCategoryRequest) (*entity.Category, error)
+	UpdateCategory(updateCategoryRequest request.UpdateCategoryRequest) (*entity.Category, error)
+	FindOneCategoryByID(categoryID string) (*entity.Category, error)
 	DeleteCategory(categoryID string) error
 }
 
@@ -29,14 +27,13 @@ func createSlug(name string) string {
 	return strings.ToLower(strings.ReplaceAll(name, " ", "-"))
 }
 
-func (c *categoryService) All() (*[]_category.CategoryResponse, error) {
+func (c *categoryService) All() (*[]entity.Category, error) {
 	categories, err := c.categoryRepo.All()
 	if err != nil {
 		return nil, err
 	}
 
-	resCategories := _category.NewCategoryArrayResponse(categories)
-	return &resCategories, nil
+	return &categories, nil
 }
 
 func NewCategoryService(categoryRepo repo.CategoryRepository) CategoryService {
@@ -45,7 +42,7 @@ func NewCategoryService(categoryRepo repo.CategoryRepository) CategoryService {
 	}
 }
 
-func (c *categoryService) CreateCategory(categoryRequest request.CreateCategoryRequest) (*_category.CategoryResponse, error) {
+func (c *categoryService) CreateCategory(categoryRequest request.CreateCategoryRequest) (*entity.Category, error) {
 	category := entity.Category{}
 	err := smapping.FillStruct(&category, smapping.MapFields(&categoryRequest))
 
@@ -54,27 +51,25 @@ func (c *categoryService) CreateCategory(categoryRequest request.CreateCategoryR
 		return nil, err
 	}
 	category.Slug = createSlug(category.Name)
-	p, err := c.categoryRepo.InsertCategory(category)
+	cat, err := c.categoryRepo.InsertCategory(category)
 	if err != nil {
 		return nil, err
 	}
 
-	res := _category.NewCategoryResponse(p)
-	return &res, nil
+	return &cat, nil
 }
 
-func (c *categoryService) FindOneCategoryByID(categoryID string) (*_category.CategoryResponse, error) {
+func (c *categoryService) FindOneCategoryByID(categoryID string) (*entity.Category, error) {
 	category, err := c.categoryRepo.FindOneCategoryByID(categoryID)
 
 	if err != nil {
 		return nil, err
 	}
 
-	res := _category.NewCategoryResponse(category)
-	return &res, nil
+	return &category, nil
 }
 
-func (c *categoryService) UpdateCategory(updateCategoryRequest request.UpdateCategoryRequest) (*_category.CategoryResponse, error) {
+func (c *categoryService) UpdateCategory(updateCategoryRequest request.UpdateCategoryRequest) (*entity.Category, error) {
 	category, err := c.categoryRepo.FindOneCategoryByID(fmt.Sprintf("%d", updateCategoryRequest.ID))
 	if err != nil {
 		return nil, err
@@ -95,8 +90,7 @@ func (c *categoryService) UpdateCategory(updateCategoryRequest request.UpdateCat
 		return nil, err
 	}
 
-	res := _category.NewCategoryResponse(category)
-	return &res, nil
+	return &category, nil
 }
 
 func (c *categoryService) DeleteCategory(categoryID string) error {

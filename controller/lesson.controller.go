@@ -8,6 +8,7 @@ import (
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/common/obj"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/common/response"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/request"
+	"github.com/rizkypujiraharja/Video-Course-API-Golang/resource"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/service"
 )
 
@@ -38,8 +39,8 @@ func (c *lessonController) All(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 		return
 	}
-
-	response := response.BuildResponse(true, "OK!", lessons)
+	res := resource.NewLessonArrayResponse(*lessons)
+	response := response.BuildResponse(true, "OK!", res)
 	ctx.JSON(http.StatusOK, response)
 }
 
@@ -52,13 +53,14 @@ func (c *lessonController) CreateLesson(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 		return
 	}
-	res, err := c.lessonService.CreateLesson(createLessonReq)
+	lesson, err := c.lessonService.CreateLesson(createLessonReq)
 	if err != nil {
 		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
 		ctx.AbortWithStatusJSON(http.StatusUnprocessableEntity, response)
 		return
 	}
 
+	res := resource.NewLessonResponse(*lesson)
 	response := response.BuildResponse(true, "OK!", res)
 	ctx.JSON(http.StatusCreated, response)
 
@@ -67,13 +69,14 @@ func (c *lessonController) CreateLesson(ctx *gin.Context) {
 func (c *lessonController) FindOneLessonByID(ctx *gin.Context) {
 	id := ctx.Param("id")
 
-	res, err := c.lessonService.FindOneLessonByID(id)
+	lesson, err := c.lessonService.FindOneLessonByID(id)
 	if err != nil {
 		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 		return
 	}
 
+	res := resource.NewLessonResponse(*lesson)
 	response := response.BuildResponse(true, "OK!", res)
 	ctx.JSON(http.StatusOK, response)
 }
@@ -110,7 +113,8 @@ func (c *lessonController) UpdateLesson(ctx *gin.Context) {
 		return
 	}
 
-	response := response.BuildResponse(true, "OK!", lesson)
+	res := resource.NewLessonResponse(*lesson)
+	response := response.BuildResponse(true, "OK!", res)
 	ctx.JSON(http.StatusOK, response)
 
 }

@@ -8,14 +8,12 @@ import (
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/entity"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/repo"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/request"
-
-	_sub_lesson "github.com/rizkypujiraharja/Video-Course-API-Golang/service/sub_lesson"
 )
 
 type SubLessonService interface {
-	CreateSubLesson(subLessonRequest request.CreateSubLessonRequest) (*_sub_lesson.SubLessonResponse, error)
-	UpdateSubLesson(updateSubLessonRequest request.UpdateSubLessonRequest) (*_sub_lesson.SubLessonResponse, error)
-	FindOneSubLessonByID(subLessonID string) (*_sub_lesson.SubLessonResponse, error)
+	CreateSubLesson(subLessonRequest request.CreateSubLessonRequest) (*entity.SubLesson, error)
+	UpdateSubLesson(updateSubLessonRequest request.UpdateSubLessonRequest) (*entity.SubLesson, error)
+	FindOneSubLessonByID(subLessonID string) (*entity.SubLesson, error)
 	DeleteSubLesson(subLessonID string) error
 }
 
@@ -29,7 +27,7 @@ func NewSubLessonService(subLessonRepo repo.SubLessonRepository) SubLessonServic
 	}
 }
 
-func (c *subLessonService) CreateSubLesson(subLessonRequest request.CreateSubLessonRequest) (*_sub_lesson.SubLessonResponse, error) {
+func (c *subLessonService) CreateSubLesson(subLessonRequest request.CreateSubLessonRequest) (*entity.SubLesson, error) {
 	subLesson := entity.SubLesson{}
 	err := smapping.FillStruct(&subLesson, smapping.MapFields(&subLessonRequest))
 
@@ -38,27 +36,25 @@ func (c *subLessonService) CreateSubLesson(subLessonRequest request.CreateSubLes
 		return nil, err
 	}
 
-	p, err := c.subLessonRepo.InsertSubLesson(subLesson)
+	sub, err := c.subLessonRepo.InsertSubLesson(subLesson)
 	if err != nil {
 		return nil, err
 	}
 
-	res := _sub_lesson.NewSubLessonResponse(p)
-	return &res, nil
+	return &sub, nil
 }
 
-func (c *subLessonService) FindOneSubLessonByID(subLessonID string) (*_sub_lesson.SubLessonResponse, error) {
+func (c *subLessonService) FindOneSubLessonByID(subLessonID string) (*entity.SubLesson, error) {
 	subLesson, err := c.subLessonRepo.FindOneSubLessonByID(subLessonID)
 
 	if err != nil {
 		return nil, err
 	}
 
-	res := _sub_lesson.NewSubLessonResponse(subLesson)
-	return &res, nil
+	return &subLesson, nil
 }
 
-func (c *subLessonService) UpdateSubLesson(updateSubLessonRequest request.UpdateSubLessonRequest) (*_sub_lesson.SubLessonResponse, error) {
+func (c *subLessonService) UpdateSubLesson(updateSubLessonRequest request.UpdateSubLessonRequest) (*entity.SubLesson, error) {
 	subLesson, err := c.subLessonRepo.FindOneSubLessonByID(fmt.Sprintf("%d", updateSubLessonRequest.ID))
 	if err != nil {
 		return nil, err
@@ -77,8 +73,7 @@ func (c *subLessonService) UpdateSubLesson(updateSubLessonRequest request.Update
 		return nil, err
 	}
 
-	res := _sub_lesson.NewSubLessonResponse(subLesson)
-	return &res, nil
+	return &subLesson, nil
 }
 
 func (c *subLessonService) DeleteSubLesson(subLessonID string) error {

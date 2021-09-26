@@ -1,4 +1,4 @@
-package _user
+package resource
 
 import "github.com/rizkypujiraharja/Video-Course-API-Golang/entity"
 
@@ -14,5 +14,6 @@ func NewUserResponse(user entity.User) UserResponse {
 		ID:    user.ID,
 		Email: user.Email,
 		Name:  user.Name,
+		Token: user.Token,
 	}
 }

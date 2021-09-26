@@ -1,4 +1,4 @@
-package _video
+package resource
 
 import (
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/entity"

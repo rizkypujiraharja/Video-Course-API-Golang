@@ -6,4 +6,5 @@ type User struct {
 	Email    string `gorm:"type:varchar(100);unique;" json:"-"`
 	Password string `gorm:"type:varchar(100)" json:"-"`
 	Role     string `gorm:"type:varchar(100)" json:"-"`
+	Token    string `gorm:"-" json:"token"`
 }

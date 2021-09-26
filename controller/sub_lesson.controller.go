@@ -8,6 +8,7 @@ import (
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/common/obj"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/common/response"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/request"
+	"github.com/rizkypujiraharja/Video-Course-API-Golang/resource"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/service"
 )
 
@@ -39,13 +40,13 @@ func (c *subLessonController) CreateSubLesson(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 		return
 	}
-	res, err := c.subLessonService.CreateSubLesson(createSubLessonReq)
+	subLesson, err := c.subLessonService.CreateSubLesson(createSubLessonReq)
 	if err != nil {
 		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
 		ctx.AbortWithStatusJSON(http.StatusUnprocessableEntity, response)
 		return
 	}
-
+	res := resource.NewSubLessonResponse(*subLesson)
 	response := response.BuildResponse(true, "OK!", res)
 	ctx.JSON(http.StatusCreated, response)
 
@@ -54,13 +55,14 @@ func (c *subLessonController) CreateSubLesson(ctx *gin.Context) {
 func (c *subLessonController) FindOneSubLessonByID(ctx *gin.Context) {
 	id := ctx.Param("id")
 
-	res, err := c.subLessonService.FindOneSubLessonByID(id)
+	subLesson, err := c.subLessonService.FindOneSubLessonByID(id)
 	if err != nil {
 		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 		return
 	}
 
+	res := resource.NewSubLessonResponse(*subLesson)
 	response := response.BuildResponse(true, "OK!", res)
 	ctx.JSON(http.StatusOK, response)
 }
@@ -97,7 +99,8 @@ func (c *subLessonController) UpdateSubLesson(ctx *gin.Context) {
 		return
 	}
 
-	response := response.BuildResponse(true, "OK!", subLesson)
+	res := resource.NewSubLessonResponse(*subLesson)
+	response := response.BuildResponse(true, "OK!", res)
 	ctx.JSON(http.StatusOK, response)
 
 }

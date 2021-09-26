@@ -8,6 +8,7 @@ import (
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/common/obj"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/common/response"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/request"
+	"github.com/rizkypujiraharja/Video-Course-API-Golang/resource"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/service"
 )
 
@@ -51,14 +52,14 @@ func (c *userController) Update(ctx *gin.Context) {
 
 	_id, _ := strconv.ParseInt(id, 0, 64)
 	updateUserRequest.ID = _id
-	res, err := c.userService.UpdateUser(updateUserRequest)
+	user, err := c.userService.UpdateUser(updateUserRequest)
 
 	if err != nil {
 		response := response.BuildErrorResponse("Error", err.Error(), obj.EmptyObj{})
 		ctx.AbortWithStatusJSON(http.StatusUnauthorized, response)
 		return
 	}
-
+	res := resource.NewUserResponse(*user)
 	response := response.BuildResponse(true, "OK", res)
 	ctx.JSON(http.StatusOK, response)
 
@@ -68,6 +69,7 @@ func (c *userController) Profile(ctx *gin.Context) {
 	userId := c.jwtService.GetUserId(ctx)
 	user, _ := c.userService.FindUserByID(userId)
 
-	res := response.BuildResponse(true, "OK", user)
-	ctx.JSON(http.StatusOK, res)
+	res := resource.NewUserResponse(*user)
+	response := response.BuildResponse(true, "OK", res)
+	ctx.JSON(http.StatusOK, response)
 }

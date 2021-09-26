@@ -8,6 +8,7 @@ import (
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/common/obj"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/common/response"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/request"
+	"github.com/rizkypujiraharja/Video-Course-API-Golang/resource"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/service"
 )
 
@@ -55,9 +56,9 @@ func (c *authController) Login(ctx *gin.Context) {
 
 	token := c.jwtService.GenerateToken(strconv.FormatInt(user.ID, 10))
 	user.Token = token
-	response := response.BuildResponse(true, "OK!", user)
+	res := resource.NewUserResponse(*user)
+	response := response.BuildResponse(true, "OK!", res)
 	ctx.JSON(http.StatusOK, response)
-
 }
 
 func (c *authController) Register(ctx *gin.Context) {
@@ -79,7 +80,7 @@ func (c *authController) Register(ctx *gin.Context) {
 
 	token := c.jwtService.GenerateToken(strconv.FormatInt(user.ID, 10))
 	user.Token = token
-	response := response.BuildResponse(true, "OK!", user)
+	res := resource.NewUserResponse(*user)
+	response := response.BuildResponse(true, "OK!", res)
 	ctx.JSON(http.StatusCreated, response)
-
 }

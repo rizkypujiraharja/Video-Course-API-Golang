@@ -8,15 +8,13 @@ import (
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/entity"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/repo"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/request"
-
-	_lesson "github.com/rizkypujiraharja/Video-Course-API-Golang/service/lesson"
 )
 
 type LessonService interface {
-	All() (*[]_lesson.LessonResponse, error)
-	CreateLesson(lessonRequest request.CreateLessonRequest) (*_lesson.LessonResponse, error)
-	UpdateLesson(updateLessonRequest request.UpdateLessonRequest) (*_lesson.LessonResponse, error)
-	FindOneLessonByID(lessonID string) (*_lesson.LessonResponse, error)
+	All() (*[]entity.Lesson, error)
+	CreateLesson(lessonRequest request.CreateLessonRequest) (*entity.Lesson, error)
+	UpdateLesson(updateLessonRequest request.UpdateLessonRequest) (*entity.Lesson, error)
+	FindOneLessonByID(lessonID string) (*entity.Lesson, error)
 	DeleteLesson(lessonID string) error
 }
 
@@ -30,17 +28,16 @@ func NewLessonService(lessonRepo repo.LessonRepository) LessonService {
 	}
 }
 
-func (c *lessonService) All() (*[]_lesson.LessonResponse, error) {
+func (c *lessonService) All() (*[]entity.Lesson, error) {
 	lessons, err := c.lessonRepo.All()
 	if err != nil {
 		return nil, err
 	}
 
-	lessonsRes := _lesson.NewLessonArrayResponse(lessons)
-	return &lessonsRes, nil
+	return &lessons, nil
 }
 
-func (c *lessonService) CreateLesson(lessonRequest request.CreateLessonRequest) (*_lesson.LessonResponse, error) {
+func (c *lessonService) CreateLesson(lessonRequest request.CreateLessonRequest) (*entity.Lesson, error) {
 	lesson := entity.Lesson{}
 	err := smapping.FillStruct(&lesson, smapping.MapFields(&lessonRequest))
 
@@ -49,27 +46,25 @@ func (c *lessonService) CreateLesson(lessonRequest request.CreateLessonRequest) 
 		return nil, err
 	}
 
-	p, err := c.lessonRepo.InsertLesson(lesson)
+	les, err := c.lessonRepo.InsertLesson(lesson)
 	if err != nil {
 		return nil, err
 	}
 
-	res := _lesson.NewLessonResponse(p)
-	return &res, nil
+	return &les, nil
 }
 
-func (c *lessonService) FindOneLessonByID(lessonID string) (*_lesson.LessonResponse, error) {
+func (c *lessonService) FindOneLessonByID(lessonID string) (*entity.Lesson, error) {
 	lesson, err := c.lessonRepo.FindOneLessonByID(lessonID)
 
 	if err != nil {
 		return nil, err
 	}
 
-	res := _lesson.NewLessonResponse(lesson)
-	return &res, nil
+	return &lesson, nil
 }
 
-func (c *lessonService) UpdateLesson(updateLessonRequest request.UpdateLessonRequest) (*_lesson.LessonResponse, error) {
+func (c *lessonService) UpdateLesson(updateLessonRequest request.UpdateLessonRequest) (*entity.Lesson, error) {
 	lesson, err := c.lessonRepo.FindOneLessonByID(fmt.Sprintf("%d", updateLessonRequest.ID))
 	if err != nil {
 		return nil, err
@@ -88,8 +83,7 @@ func (c *lessonService) UpdateLesson(updateLessonRequest request.UpdateLessonReq
 		return nil, err
 	}
 
-	res := _lesson.NewLessonResponse(lesson)
-	return &res, nil
+	return &lesson, nil
 }
 
 func (c *lessonService) DeleteLesson(lessonID string) error {

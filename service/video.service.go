@@ -8,14 +8,12 @@ import (
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/entity"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/repo"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/request"
-
-	_video "github.com/rizkypujiraharja/Video-Course-API-Golang/service/video"
 )
 
 type VideoService interface {
-	CreateVideo(videoRequest request.CreateVideoRequest) (*_video.VideoResponse, error)
-	UpdateVideo(updateVideoRequest request.UpdateVideoRequest) (*_video.VideoResponse, error)
-	FindOneVideoByID(videoID string) (*_video.VideoResponse, error)
+	CreateVideo(videoRequest request.CreateVideoRequest) (*entity.Video, error)
+	UpdateVideo(updateVideoRequest request.UpdateVideoRequest) (*entity.Video, error)
+	FindOneVideoByID(videoID string) (*entity.Video, error)
 	DeleteVideo(videoID string) error
 }
 
@@ -29,7 +27,7 @@ func NewVideoService(videoRepo repo.VideoRepository) VideoService {
 	}
 }
 
-func (c *videoService) CreateVideo(videoRequest request.CreateVideoRequest) (*_video.VideoResponse, error) {
+func (c *videoService) CreateVideo(videoRequest request.CreateVideoRequest) (*entity.Video, error) {
 	video := entity.Video{}
 	err := smapping.FillStruct(&video, smapping.MapFields(&videoRequest))
 
@@ -38,27 +36,25 @@ func (c *videoService) CreateVideo(videoRequest request.CreateVideoRequest) (*_v
 		return nil, err
 	}
 
-	p, err := c.videoRepo.InsertVideo(video)
+	vid, err := c.videoRepo.InsertVideo(video)
 	if err != nil {
 		return nil, err
 	}
 
-	res := _video.NewVideoResponse(p)
-	return &res, nil
+	return &vid, nil
 }
 
-func (c *videoService) FindOneVideoByID(videoID string) (*_video.VideoResponse, error) {
+func (c *videoService) FindOneVideoByID(videoID string) (*entity.Video, error) {
 	video, err := c.videoRepo.FindOneVideoByID(videoID)
 
 	if err != nil {
 		return nil, err
 	}
 
-	res := _video.NewVideoResponse(video)
-	return &res, nil
+	return &video, nil
 }
 
-func (c *videoService) UpdateVideo(updateVideoRequest request.UpdateVideoRequest) (*_video.VideoResponse, error) {
+func (c *videoService) UpdateVideo(updateVideoRequest request.UpdateVideoRequest) (*entity.Video, error) {
 	video, err := c.videoRepo.FindOneVideoByID(fmt.Sprintf("%d", updateVideoRequest.ID))
 	if err != nil {
 		return nil, err
@@ -77,8 +73,7 @@ func (c *videoService) UpdateVideo(updateVideoRequest request.UpdateVideoRequest
 		return nil, err
 	}
 
-	res := _video.NewVideoResponse(video)
-	return &res, nil
+	return &video, nil
 }
 
 func (c *videoService) DeleteVideo(videoID string) error {

@@ -8,15 +8,14 @@ import (
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/entity"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/repo"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/request"
-	_user "github.com/rizkypujiraharja/Video-Course-API-Golang/service/user"
 	"gorm.io/gorm"
 )
 
 type UserService interface {
-	CreateUser(registerRequest request.RegisterRequest) (*_user.UserResponse, error)
-	UpdateUser(updateUserRequest request.UpdateUserRequest) (*_user.UserResponse, error)
-	FindUserByEmail(email string) (*_user.UserResponse, error)
-	FindUserByID(userID string) (*_user.UserResponse, error)
+	CreateUser(registerRequest request.RegisterRequest) (*entity.User, error)
+	UpdateUser(updateUserRequest request.UpdateUserRequest) (*entity.User, error)
+	FindUserByEmail(email string) (*entity.User, error)
+	FindUserByID(userID string) (*entity.User, error)
 }
 
 type userService struct {
@@ -29,7 +28,7 @@ func NewUserService(userRepo repo.UserRepository) UserService {
 	}
 }
 
-func (c *userService) UpdateUser(updateUserRequest request.UpdateUserRequest) (*_user.UserResponse, error) {
+func (c *userService) UpdateUser(updateUserRequest request.UpdateUserRequest) (*entity.User, error) {
 	user := entity.User{}
 	err := smapping.FillStruct(&user, smapping.MapFields(&updateUserRequest))
 
@@ -42,12 +41,11 @@ func (c *userService) UpdateUser(updateUserRequest request.UpdateUserRequest) (*
 		return nil, err
 	}
 
-	res := _user.NewUserResponse(user)
-	return &res, nil
+	return &user, nil
 
 }
 
-func (c *userService) CreateUser(registerRequest request.RegisterRequest) (*_user.UserResponse, error) {
+func (c *userService) CreateUser(registerRequest request.RegisterRequest) (*entity.User, error) {
 	user, err := c.userRepo.FindByEmail(registerRequest.Email)
 
 	if err == nil {
@@ -66,33 +64,30 @@ func (c *userService) CreateUser(registerRequest request.RegisterRequest) (*_use
 	}
 	user.Role = "user"
 	user, _ = c.userRepo.InsertUser(user)
-	res := _user.NewUserResponse(user)
-	return &res, nil
-
+	return &user, nil
 }
 
-func (c *userService) FindUserByEmail(email string) (*_user.UserResponse, error) {
+func (c *userService) FindUserByEmail(email string) (*entity.User, error) {
 	user, err := c.userRepo.FindByEmail(email)
 
 	if err != nil {
 		return nil, err
 	}
 
-	userResponse := _user.NewUserResponse(user)
-	return &userResponse, nil
+	return &user, nil
 }
 
-func (c *userService) FindUserByID(userID string) (*_user.UserResponse, error) {
+func (c *userService) FindUserByID(userID string) (*entity.User, error) {
 	user, err := c.userRepo.FindByUserID(userID)
 
 	if err != nil {
 		return nil, err
 	}
 
-	userResponse := _user.UserResponse{}
-	err = smapping.FillStruct(&userResponse, smapping.MapFields(&user))
+	usr := entity.User{}
+	err = smapping.FillStruct(&usr, smapping.MapFields(&user))
 	if err != nil {
 		return nil, err
 	}
-	return &userResponse, nil
+	return &usr, nil
 }

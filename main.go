@@ -37,6 +37,10 @@ var (
 	videoRepo       repo.VideoRepository       = repo.NewVideoRepo(db)
 	videoService    service.VideoService       = service.NewVideoService(videoRepo)
 	videoController controller.VideoController = controller.NewVideoController(videoService, jwtService)
+
+	orderRepo       repo.OrderRepository       = repo.NewOrderRepo(db)
+	orderService    service.OrderService       = service.NewOrderService(orderRepo)
+	orderController controller.OrderController = controller.NewOrderController(orderService, jwtService)
 )
 
 func main() {
@@ -46,6 +50,8 @@ func main() {
 		&entity.Lesson{},
 		&entity.SubLesson{},
 		&entity.Video{},
+		&entity.Order{},
+		&entity.OrderDetail{},
 	)
 	defer config.CloseDatabaseConnection(db)
 	server := gin.Default()
@@ -70,13 +76,17 @@ func main() {
 		categoryRoutes.DELETE("/:id", categoryController.DeleteCategory, middleware.AuthorizeJWT(jwtService, "admin"))
 	}
 
-	lessonRoutes := server.Group("api/lessons")
+	publicLessonRoutes := server.Group("api/lessons")
 	{
-		lessonRoutes.GET("/", lessonController.All)
-		lessonRoutes.GET("/:id", lessonController.FindOneLessonByID)
-		lessonRoutes.POST("/", lessonController.CreateLesson, middleware.AuthorizeJWT(jwtService))
-		lessonRoutes.PUT("/:id", lessonController.UpdateLesson, middleware.AuthorizeJWT(jwtService))
-		lessonRoutes.DELETE("/:id", lessonController.DeleteLesson, middleware.AuthorizeJWT(jwtService))
+		publicLessonRoutes.GET("/", lessonController.All)
+		publicLessonRoutes.GET("/:id", lessonController.FindOneLessonByID)
+	}
+
+	lessonRoutes := server.Group("api/lessons", middleware.AuthorizeJWT(jwtService))
+	{
+		lessonRoutes.POST("/", lessonController.CreateLesson)
+		lessonRoutes.PUT("/:id", lessonController.UpdateLesson)
+		lessonRoutes.DELETE("/:id", lessonController.DeleteLesson)
 	}
 
 	subLessonRoutes := server.Group("api/sub-lessons", middleware.AuthorizeJWT(jwtService, "admin"))
@@ -94,6 +104,18 @@ func main() {
 		videoRoutes.PUT("/:id", videoController.UpdateVideo)
 		videoRoutes.DELETE("/:id", videoController.DeleteVideo)
 	}
+
+	userOrderRoutes := server.Group("api/orders", middleware.AuthorizeJWT(jwtService, "user"))
+	{
+		userOrderRoutes.POST("/", orderController.CreateOrder)
+	}
+
+	// adminOrderRoutes := server.Group("api/orders", middleware.AuthorizeJWT(jwtService, "admin"))
+	// {
+	// adminOrderRoutes.GET("/", videoController.CreateVideo)
+	// adminOrderRoutes.PUT("/paid:id", videoController.UpdateVideo)
+	// adminOrderRoutes.PUT("/unpaid:id", videoController.UpdateVideo)
+	// }
 
 	server.Run()
 }

@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -8,82 +9,78 @@ import (
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/common/obj"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/common/response"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/request"
-	"github.com/rizkypujiraharja/Video-Course-API-Golang/resource"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/service"
 )
 
-type VideoController interface {
-	CreateVideo(ctx *gin.Context)
-	UpdateVideo(ctx *gin.Context)
-	DeleteVideo(ctx *gin.Context)
-	FindOneVideoByID(ctx *gin.Context)
+type OrderController interface {
+	All(ctx *gin.Context)
+	CreateOrder(ctx *gin.Context)
+	UpdateOrder(ctx *gin.Context)
+	FindOneOrderByID(ctx *gin.Context)
 }
 
-type videoController struct {
-	videoService service.VideoService
+type orderController struct {
+	orderService service.OrderService
 	jwtService   service.JWTService
 }
 
-func NewVideoController(videoService service.VideoService, jwtService service.JWTService) VideoController {
-	return &videoController{
-		videoService: videoService,
+func NewOrderController(orderService service.OrderService, jwtService service.JWTService) OrderController {
+	return &orderController{
+		orderService: orderService,
 		jwtService:   jwtService,
 	}
 }
 
-func (c *videoController) CreateVideo(ctx *gin.Context) {
-	var createVideoReq request.CreateVideoRequest
-	err := ctx.ShouldBind(&createVideoReq)
-
+func (c *orderController) All(ctx *gin.Context) {
+	orders, err := c.orderService.All()
 	if err != nil {
 		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 		return
 	}
-	video, err := c.videoService.CreateVideo(createVideoReq)
+
+	response := response.BuildResponse(true, "OK!", orders)
+	ctx.JSON(http.StatusOK, response)
+}
+
+func (c *orderController) CreateOrder(ctx *gin.Context) {
+	var createOrderReq request.CreateOrderRequest
+	err := ctx.ShouldBind(&createOrderReq)
+	fmt.Println(createOrderReq)
+	if err != nil {
+		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
+		return
+	}
+	res, err := c.orderService.CreateOrder(createOrderReq)
 	if err != nil {
 		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
 		ctx.AbortWithStatusJSON(http.StatusUnprocessableEntity, response)
 		return
 	}
 
-	res := resource.NewVideoResponse(*video)
 	response := response.BuildResponse(true, "OK!", res)
 	ctx.JSON(http.StatusCreated, response)
 
 }
 
-func (c *videoController) FindOneVideoByID(ctx *gin.Context) {
+func (c *orderController) FindOneOrderByID(ctx *gin.Context) {
 	id := ctx.Param("id")
 
-	video, err := c.videoService.FindOneVideoByID(id)
+	res, err := c.orderService.FindOneOrderByID(id)
 	if err != nil {
 		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 		return
 	}
 
-	res := resource.NewVideoResponse(*video)
 	response := response.BuildResponse(true, "OK!", res)
 	ctx.JSON(http.StatusOK, response)
 }
 
-func (c *videoController) DeleteVideo(ctx *gin.Context) {
-	id := ctx.Param("id")
-
-	err := c.videoService.DeleteVideo(id)
-	if err != nil {
-		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
-		return
-	}
-	response := response.BuildResponse(true, "OK!", obj.EmptyObj{})
-	ctx.JSON(http.StatusOK, response)
-}
-
-func (c *videoController) UpdateVideo(ctx *gin.Context) {
-	updateVideoRequest := request.UpdateVideoRequest{}
-	err := ctx.ShouldBind(&updateVideoRequest)
+func (c *orderController) UpdateOrder(ctx *gin.Context) {
+	updateOrderRequest := request.UpdateOrderRequest{}
+	err := ctx.ShouldBind(&updateOrderRequest)
 
 	if err != nil {
 		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
@@ -92,16 +89,15 @@ func (c *videoController) UpdateVideo(ctx *gin.Context) {
 	}
 
 	id, _ := strconv.ParseInt(ctx.Param("id"), 0, 64)
-	updateVideoRequest.ID = id
-	video, err := c.videoService.UpdateVideo(updateVideoRequest)
+	updateOrderRequest.ID = id
+	order, err := c.orderService.UpdateOrder(updateOrderRequest)
 	if err != nil {
 		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
 		ctx.AbortWithStatusJSON(http.StatusUnprocessableEntity, response)
 		return
 	}
 
-	res := resource.NewVideoResponse(*video)
-	response := response.BuildResponse(true, "OK!", res)
+	response := response.BuildResponse(true, "OK!", order)
 	ctx.JSON(http.StatusOK, response)
 
 }

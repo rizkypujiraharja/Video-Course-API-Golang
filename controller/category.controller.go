@@ -8,6 +8,7 @@ import (
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/common/obj"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/common/response"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/request"
+	"github.com/rizkypujiraharja/Video-Course-API-Golang/resource"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/service"
 )
 
@@ -38,8 +39,8 @@ func (c *categoryController) All(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 		return
 	}
-
-	response := response.BuildResponse(true, "OK!", categories)
+	res := resource.NewCategoryArrayResponse(*categories)
+	response := response.BuildResponse(true, "OK!", res)
 	ctx.JSON(http.StatusOK, response)
 }
 
@@ -53,13 +54,14 @@ func (c *categoryController) CreateCategory(ctx *gin.Context) {
 		return
 	}
 
-	res, err := c.categoryService.CreateCategory(createCategoryReq)
+	category, err := c.categoryService.CreateCategory(createCategoryReq)
 	if err != nil {
 		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
 		ctx.AbortWithStatusJSON(http.StatusUnprocessableEntity, response)
 		return
 	}
 
+	res := resource.NewCategoryResponse(*category)
 	response := response.BuildResponse(true, "OK!", res)
 	ctx.JSON(http.StatusCreated, response)
 
@@ -68,13 +70,14 @@ func (c *categoryController) CreateCategory(ctx *gin.Context) {
 func (c *categoryController) FindOneCategoryByID(ctx *gin.Context) {
 	id := ctx.Param("id")
 
-	res, err := c.categoryService.FindOneCategoryByID(id)
+	category, err := c.categoryService.FindOneCategoryByID(id)
 	if err != nil {
 		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 		return
 	}
 
+	res := resource.NewCategoryResponse(*category)
 	response := response.BuildResponse(true, "OK!", res)
 	ctx.JSON(http.StatusOK, response)
 }
@@ -111,7 +114,8 @@ func (c *categoryController) UpdateCategory(ctx *gin.Context) {
 		return
 	}
 
-	response := response.BuildResponse(true, "OK!", category)
+	res := resource.NewCategoryResponse(*category)
+	response := response.BuildResponse(true, "OK!", res)
 	ctx.JSON(http.StatusOK, response)
 
 }
