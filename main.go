@@ -1,7 +1,10 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
+	"github.com/rizkypujiraharja/Video-Course-API-Golang/common/response"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/config"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/controller"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/entity"
@@ -59,6 +62,18 @@ func main() {
 	)
 	defer config.CloseDatabaseConnection(db)
 	server := gin.Default()
+
+	server.GET("/", func(c *gin.Context) {
+		var info = map[string]string{}
+		info["app_name"] = "Video Couse"
+		info["author"] = "Rizky Puji Raharja"
+		info["version"] = "1.0.0"
+		info["postman_documentation"] = "https://documenter.getpostman.com/view/6967483/UUxwEVFJ"
+		info["swagger_documentation"] = "https://app.swaggerhub.com/apis-docs/rizkypujiraharja/video-course/1.0.0"
+
+		response := response.BuildResponse(true, "OK!", info)
+		c.JSON(http.StatusCreated, response)
+	})
 
 	authRoutes := server.Group("api/auth")
 	{
