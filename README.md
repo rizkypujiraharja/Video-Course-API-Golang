@@ -10,5 +10,4 @@
 - Dokumentasi API [Swager](https://app.swaggerhub.com/apis-docs/rizkypujiraharja/video-course/1.0.0)
 
 ## Struktur Database
-- [Download file SQL](https://google.com)
 ![](https://raw.githubusercontent.com/rizkypujiraharja/Video-Course-API-Golang/main/ERD%20Database.png?token=AECABIA2U25QORQQUSF27LTBKBMGE)
