@@ -7,7 +7,6 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/mashingan/smapping"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/entity"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/repo"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/request"
@@ -32,9 +31,11 @@ func createInvoice() string {
 
 type OrderService interface {
 	All() (*[]entity.Order, error)
+	FindOrderByUserID(userID string) (*[]entity.Order, error)
 	CreateOrder(orderRequest request.CreateOrderRequest, userId string) (*entity.Order, error)
-	UpdateOrder(updateOrderRequest request.UpdateOrderRequest) (*entity.Order, error)
 	FindOneOrderByID(orderID string) (*entity.Order, error)
+	UpdatePaidOrder(orderID string) (*entity.Order, error)
+	UpdateUnpaidOrder(orderID string) (*entity.Order, error)
 }
 
 type orderService struct {
@@ -53,6 +54,15 @@ func NewOrderService(orderRepo repo.OrderRepository, orderDetailRepo repo.OrderD
 
 func (c *orderService) All() (*[]entity.Order, error) {
 	orders, err := c.orderRepo.All()
+	if err != nil {
+		return nil, err
+	}
+
+	return &orders, nil
+}
+
+func (c *orderService) FindOrderByUserID(userID string) (*[]entity.Order, error) {
+	orders, err := c.orderRepo.FindOrderByUserID(userID)
 	if err != nil {
 		return nil, err
 	}
@@ -118,18 +128,38 @@ func (c *orderService) FindOneOrderByID(orderID string) (*entity.Order, error) {
 	return &order, nil
 }
 
-func (c *orderService) UpdateOrder(updateOrderRequest request.UpdateOrderRequest) (*entity.Order, error) {
-	order, err := c.orderRepo.FindOneOrderByID(fmt.Sprintf("%d", updateOrderRequest.ID))
+func (c *orderService) UpdatePaidOrder(orderID string) (*entity.Order, error) {
+	order, err := c.orderRepo.FindOneOrderByID(orderID)
 	if err != nil {
 		return nil, err
 	}
 
-	order = entity.Order{}
-	err = smapping.FillStruct(&order, smapping.MapFields(&updateOrderRequest))
+	if err != nil {
+		return nil, err
+	}
+
+	order.Status = "paid"
+
+	order, err = c.orderRepo.UpdateOrder(order)
 
 	if err != nil {
 		return nil, err
 	}
+
+	return &order, nil
+}
+
+func (c *orderService) UpdateUnpaidOrder(orderID string) (*entity.Order, error) {
+	order, err := c.orderRepo.FindOneOrderByID(orderID)
+	if err != nil {
+		return nil, err
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	order.Status = "unpaid"
 
 	order, err = c.orderRepo.UpdateOrder(order)
 

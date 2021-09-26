@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	"log"
+	"strconv"
 
 	"github.com/mashingan/smapping"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/entity"
@@ -13,7 +14,7 @@ import (
 
 type UserService interface {
 	CreateUser(registerRequest request.RegisterRequest) (*entity.User, error)
-	UpdateUser(updateUserRequest request.UpdateUserRequest) (*entity.User, error)
+	UpdateUser(updateUserLoginRequest request.UpdateUserLoginRequest, userId string) (*entity.User, error)
 	FindUserByEmail(email string) (*entity.User, error)
 	FindUserByID(userID string) (*entity.User, error)
 }
@@ -28,13 +29,17 @@ func NewUserService(userRepo repo.UserRepository) UserService {
 	}
 }
 
-func (c *userService) UpdateUser(updateUserRequest request.UpdateUserRequest) (*entity.User, error) {
+func (c *userService) UpdateUser(updateUserLoginRequest request.UpdateUserLoginRequest, userId string) (*entity.User, error) {
 	user := entity.User{}
-	err := smapping.FillStruct(&user, smapping.MapFields(&updateUserRequest))
+	err := smapping.FillStruct(&user, smapping.MapFields(&updateUserLoginRequest))
 
 	if err != nil {
 		return nil, err
 	}
+
+	intUserId, _ := strconv.Atoi(userId)
+
+	user.ID = int64(intUserId)
 
 	user, err = c.userRepo.UpdateUser(user)
 	if err != nil {

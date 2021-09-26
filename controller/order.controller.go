@@ -2,7 +2,6 @@ package controller
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/common/obj"
@@ -14,9 +13,11 @@ import (
 
 type OrderController interface {
 	All(ctx *gin.Context)
+	HistoryOrder(ctx *gin.Context)
 	CreateOrder(ctx *gin.Context)
-	UpdateOrder(ctx *gin.Context)
 	FindOneOrderByID(ctx *gin.Context)
+	UpdatePaidOrder(ctx *gin.Context)
+	UpdateUnpaidOrder(ctx *gin.Context)
 }
 
 type orderController struct {
@@ -33,6 +34,21 @@ func NewOrderController(orderService service.OrderService, jwtService service.JW
 
 func (c *orderController) All(ctx *gin.Context) {
 	orders, err := c.orderService.All()
+	if err != nil {
+		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
+		return
+	}
+
+	res := resource.NewOrderArrayResponse(*orders)
+	response := response.BuildResponse(true, "OK!", res)
+	ctx.JSON(http.StatusOK, response)
+}
+
+func (c *orderController) HistoryOrder(ctx *gin.Context) {
+	userId := c.jwtService.GetUserId(ctx)
+
+	orders, err := c.orderService.FindOrderByUserID(userId)
 	if err != nil {
 		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
@@ -80,26 +96,30 @@ func (c *orderController) FindOneOrderByID(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, response)
 }
 
-func (c *orderController) UpdateOrder(ctx *gin.Context) {
-	updateOrderRequest := request.UpdateOrderRequest{}
-	err := ctx.ShouldBind(&updateOrderRequest)
-
-	if err != nil {
-		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
-		return
-	}
-
-	id, _ := strconv.ParseInt(ctx.Param("id"), 0, 64)
-	updateOrderRequest.ID = id
-	order, err := c.orderService.UpdateOrder(updateOrderRequest)
+func (c *orderController) UpdatePaidOrder(ctx *gin.Context) {
+	id := ctx.Param("id")
+	order, err := c.orderService.UpdatePaidOrder(id)
 	if err != nil {
 		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
 		ctx.AbortWithStatusJSON(http.StatusUnprocessableEntity, response)
 		return
 	}
 
-	response := response.BuildResponse(true, "OK!", order)
+	res := resource.NewOrderResponse(*order)
+	response := response.BuildResponse(true, "OK!", res)
 	ctx.JSON(http.StatusOK, response)
+}
 
+func (c *orderController) UpdateUnpaidOrder(ctx *gin.Context) {
+	id := ctx.Param("id")
+	order, err := c.orderService.UpdateUnpaidOrder(id)
+	if err != nil {
+		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
+		ctx.AbortWithStatusJSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	res := resource.NewOrderResponse(*order)
+	response := response.BuildResponse(true, "OK!", res)
+	ctx.JSON(http.StatusOK, response)
 }

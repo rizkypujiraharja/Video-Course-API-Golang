@@ -10,6 +10,7 @@ type OrderRepository interface {
 	InsertOrder(order entity.Order) (entity.Order, error)
 	UpdateOrder(order entity.Order) (entity.Order, error)
 	FindOneOrderByID(ID string) (entity.Order, error)
+	FindOrderByUserID(ID string) ([]entity.Order, error)
 }
 
 type orderRepo struct {
@@ -25,6 +26,12 @@ func NewOrderRepo(connection *gorm.DB) OrderRepository {
 func (c *orderRepo) All() ([]entity.Order, error) {
 	orders := []entity.Order{}
 	c.connection.Preload("User").Find(&orders)
+	return orders, nil
+}
+
+func (c *orderRepo) FindOrderByUserID(userID string) ([]entity.Order, error) {
+	orders := []entity.Order{}
+	c.connection.Preload("User").Where("user_id = ?", userID).Find(&orders)
 	return orders, nil
 }
 

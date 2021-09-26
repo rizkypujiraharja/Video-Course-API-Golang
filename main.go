@@ -108,11 +108,12 @@ func main() {
 	}
 
 	server.POST("/api/orders", middleware.AuthorizeJWT(jwtService, "user"), orderController.CreateOrder)
+	server.GET("/api/orders/history", middleware.AuthorizeJWT(jwtService, "user"), orderController.HistoryOrder)
 	adminOrderRoutes := server.Group("api/orders", middleware.AuthorizeJWT(jwtService, "admin"))
 	{
 		adminOrderRoutes.GET("/", orderController.All)
-		// adminOrderRoutes.PUT("/paid:id", videoController.UpdateVideo)
-		// adminOrderRoutes.PUT("/unpaid:id", videoController.UpdateVideo)
+		adminOrderRoutes.PUT("/paid/:id", orderController.UpdatePaidOrder)
+		adminOrderRoutes.PUT("/unpaid/:id", orderController.UpdateUnpaidOrder)
 	}
 
 	server.Run()

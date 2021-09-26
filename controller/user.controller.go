@@ -2,7 +2,6 @@ package controller
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/common/obj"
@@ -33,9 +32,9 @@ func NewUserController(
 }
 
 func (c *userController) Update(ctx *gin.Context) {
-	var updateUserRequest request.UpdateUserRequest
+	var updateUserLoginRequest request.UpdateUserLoginRequest
 
-	err := ctx.ShouldBind(&updateUserRequest)
+	err := ctx.ShouldBind(&updateUserLoginRequest)
 	if err != nil {
 		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
@@ -44,15 +43,7 @@ func (c *userController) Update(ctx *gin.Context) {
 
 	id := c.jwtService.GetUserId(ctx)
 
-	if id == "" {
-		response := response.BuildErrorResponse("Error", "Failed to validate token", obj.EmptyObj{})
-		ctx.AbortWithStatusJSON(http.StatusUnauthorized, response)
-		return
-	}
-
-	_id, _ := strconv.ParseInt(id, 0, 64)
-	updateUserRequest.ID = _id
-	user, err := c.userService.UpdateUser(updateUserRequest)
+	user, err := c.userService.UpdateUser(updateUserLoginRequest, id)
 
 	if err != nil {
 		response := response.BuildErrorResponse("Error", err.Error(), obj.EmptyObj{})
