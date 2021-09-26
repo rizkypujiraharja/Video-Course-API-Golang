@@ -1,8 +1,6 @@
 package repo
 
 import (
-	"fmt"
-
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/entity"
 	"gorm.io/gorm"
 )
@@ -25,7 +23,6 @@ func NewVideoRepo(connection *gorm.DB) VideoRepository {
 }
 
 func (c *videoRepo) InsertVideo(video entity.Video) (entity.Video, error) {
-	fmt.Println(video)
 	c.connection.Save(&video)
 	c.connection.Find(&video)
 	return video, nil

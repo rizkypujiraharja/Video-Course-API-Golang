@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -9,6 +8,7 @@ import (
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/common/obj"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/common/response"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/request"
+	"github.com/rizkypujiraharja/Video-Course-API-Golang/resource"
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/service"
 )
 
@@ -39,29 +39,31 @@ func (c *orderController) All(ctx *gin.Context) {
 		return
 	}
 
-	response := response.BuildResponse(true, "OK!", orders)
+	res := resource.NewOrderArrayResponse(*orders)
+	response := response.BuildResponse(true, "OK!", res)
 	ctx.JSON(http.StatusOK, response)
 }
 
 func (c *orderController) CreateOrder(ctx *gin.Context) {
 	var createOrderReq request.CreateOrderRequest
 	err := ctx.ShouldBind(&createOrderReq)
-	fmt.Println(createOrderReq)
 	if err != nil {
 		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 		return
 	}
-	res, err := c.orderService.CreateOrder(createOrderReq)
+
+	userId := c.jwtService.GetUserId(ctx)
+
+	order, err := c.orderService.CreateOrder(createOrderReq, userId)
 	if err != nil {
 		response := response.BuildErrorResponse("Failed to process request", err.Error(), obj.EmptyObj{})
 		ctx.AbortWithStatusJSON(http.StatusUnprocessableEntity, response)
 		return
 	}
-
+	res := resource.NewOrderResponse(*order)
 	response := response.BuildResponse(true, "OK!", res)
 	ctx.JSON(http.StatusCreated, response)
-
 }
 
 func (c *orderController) FindOneOrderByID(ctx *gin.Context) {

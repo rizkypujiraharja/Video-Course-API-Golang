@@ -70,16 +70,16 @@ func (j *jwtService) GenerateToken(UserID string) string {
 func (j *jwtService) ValidateToken(ctx *gin.Context) *jwt.Token {
 	authHeader := ctx.GetHeader("Authorization")
 
+	if authHeader == "" {
+		response := response.BuildErrorResponse("Failed to process request", "No token provided", nil)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
+	}
+
 	splitToken := strings.Split(authHeader, "Bearer ")
 	reqToken := strings.TrimSpace(splitToken[1])
 
 	if len(splitToken) != 2 {
 		response := response.BuildErrorResponse("Failed to process request", "Bearer token not in proper format", nil)
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
-	}
-
-	if authHeader == "" {
-		response := response.BuildErrorResponse("Failed to process request", "No token provided", nil)
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 	}
 

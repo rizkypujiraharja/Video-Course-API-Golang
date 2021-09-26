@@ -1,8 +1,6 @@
 package repo
 
 import (
-	"fmt"
-
 	"github.com/rizkypujiraharja/Video-Course-API-Golang/entity"
 	"gorm.io/gorm"
 )
@@ -26,26 +24,25 @@ func NewOrderRepo(connection *gorm.DB) OrderRepository {
 
 func (c *orderRepo) All() ([]entity.Order, error) {
 	orders := []entity.Order{}
-	c.connection.Find(&orders)
+	c.connection.Preload("User").Find(&orders)
 	return orders, nil
 }
 
 func (c *orderRepo) InsertOrder(order entity.Order) (entity.Order, error) {
-	fmt.Println(order)
 	c.connection.Save(&order)
-	c.connection.Find(&order)
+	c.connection.Preload("User").Find(&order)
 	return order, nil
 }
 
 func (c *orderRepo) UpdateOrder(order entity.Order) (entity.Order, error) {
 	c.connection.Save(&order)
-	c.connection.Find(&order)
+	c.connection.Preload("User").Find(&order)
 	return order, nil
 }
 
 func (c *orderRepo) FindOneOrderByID(orderID string) (entity.Order, error) {
 	var order entity.Order
-	res := c.connection.Preload("SubOrders.Videos").Where("id = ?", orderID).Take(&order)
+	res := c.connection.Preload("User").Preload("OrderDetails.Lesson.Category").Where("id = ?", orderID).Take(&order)
 	if res.Error != nil {
 		return order, res.Error
 	}

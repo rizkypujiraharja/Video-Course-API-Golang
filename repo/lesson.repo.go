@@ -13,6 +13,7 @@ type LessonRepository interface {
 	UpdateLesson(lesson entity.Lesson) (entity.Lesson, error)
 	DeleteLesson(lessonID string) error
 	FindOneLessonByID(ID string) (entity.Lesson, error)
+	FindLessonByIDS(LessonIDS []int) ([]entity.Lesson, error)
 }
 
 type lessonRepo struct {
@@ -61,4 +62,13 @@ func (c *lessonRepo) DeleteLesson(lessonID string) error {
 	}
 	c.connection.Delete(&lesson)
 	return nil
+}
+
+func (c *lessonRepo) FindLessonByIDS(lessonIDS []int) ([]entity.Lesson, error) {
+	var lessons []entity.Lesson
+	res := c.connection.Find(&lessons, lessonIDS)
+	if res.Error != nil {
+		return lessons, res.Error
+	}
+	return lessons, nil
 }
